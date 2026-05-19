@@ -21,7 +21,7 @@
     <ion-card-header>
 
       <ion-card-title>
-        Ingreso de datos hospitalarios
+         Complete los siguientes campos  
       </ion-card-title>
 
     </ion-card-header>
@@ -33,10 +33,11 @@
       <ion-searchbar
         [(ngModel)]="hospital"
         (ionInput)="filtrarHospitales($event)"
-        placeholder="Buscar hospital">
+        placeholder="Seleccione el hospital a consultar">
       </ion-searchbar>
 
       <!-- LISTA -->
+      
 
       <ion-list
         *ngIf="hospitalesFiltrados.length > 0">
@@ -55,242 +56,156 @@
       <!-- GRID -->
 
       <ion-grid>
+  <!-- FILA PRINCIPAL: Divide la pantalla en dos grandes bloques -->
+  <ion-row>
+    
+    <!-- ======================================================= -->
+    <!-- COLUMNA IZQUIERDA: PEDIATRÍA                            -->
+    <!-- ======================================================= -->
+    <ion-col size="12" size-md="6">
+      
+      <!-- Título de la columna -->
+      <ion-item lines="none" class="ion-text-center">
+        <ion-label>
+          <h2><strong>Camas Pediátricas</strong></h2>
+        </ion-label>
+      </ion-item>
+
+      <!-- Básicas -->
+      <ion-item>
+        <ion-label position="stacked">Camas básicas pediátricas</ion-label>
+        <ion-input
+          type="number"
+          min="0"
+          [(ngModel)]="camasBasicasPediatricas"
+          (keydown)="bloquearNegativos($event)"
+          (ionPaste)="bloquearPegado($event)"
+          (ionInput)="validarCampo('camasBasicasPediatricas', $event.detail.value)">
+        </ion-input>
+      </ion-item>
+      <small *ngIf="errores.camasBasicasPediatricas">No se permiten negativos</small>
+
+      <!-- Medias -->
+      <ion-item>
+        <ion-label position="stacked">Camas medias pediátricas</ion-label>
+        <ion-input
+          type="number"
+          min="0"
+          [(ngModel)]="camasMediasPediatricas"
+          (keydown)="bloquearNegativos($event)"
+          (ionPaste)="bloquearPegado($event)"
+          (ionInput)="validarCampo('camasMediasPediatricas', $event.detail.value)">
+        </ion-input>
+      </ion-item>
+      <small *ngIf="errores.camasMediasPediatricas">No se permiten negativos</small>
+
+      <!-- Críticas -->
+      <ion-item>
+        <ion-label position="stacked">Camas críticas pediátricas</ion-label>
+        <ion-input
+          type="number"
+          min="0"
+          [(ngModel)]="camasCriticasPediatricas"
+          (keydown)="bloquearNegativos($event)"
+          (ionPaste)="bloquearPegado($event)"
+          (ionInput)="validarCampo('camasCriticasPediatricas', $event.detail.value)">
+        </ion-input>
+      </ion-item>
+      <small *ngIf="errores.camasCriticasPediatricas">No se permiten negativos</small>
+
+    </ion-col>
+
+    <!-- ======================================================= -->
+    <!-- COLUMNA DERECHA: ADULTOS                                -->
+    <!-- ======================================================= -->
+    <ion-col size="12" size-md="6">
+      
+      <!-- Título de la columna -->
+      <ion-item lines="none" class="ion-text-center">
+        <ion-label>
+          <h2><strong>Camas Adultos</strong></h2>
+        </ion-label>
+      </ion-item>
+
+      <!-- Básicas -->
+      <ion-item>
+        <ion-label position="stacked">Camas básicas adultos</ion-label>
+        <ion-input
+          type="number"
+          min="0"
+          [(ngModel)]="camasBasicasAdultos"
+          (keydown)="bloquearNegativos($event)"
+          (ionPaste)="bloquearPegado($event)"
+          (ionInput)="validarCampo('camasBasicasAdultos', $event.detail.value)">
+        </ion-input>
+      </ion-item>
+      <small *ngIf="errores.camasBasicasAdultos">No se permiten negativos</small>
+
+      <!-- Medias -->
+      <ion-item>
+        <ion-label position="stacked">Camas medias adultos</ion-label>
+        <ion-input
+          type="number"
+          min="0"
+          [(ngModel)]="camasMediasAdultos"
+          (keydown)="bloquearNegativos($event)"
+          (ionPaste)="bloquearPegado($event)"
+          (ionInput)="validarCampo('camasMediasAdultos', $event.detail.value)">
+        </ion-input>
+      </ion-item>
+      <small *ngIf="errores.camasMediasAdultos">No se permiten negativos</small>
+
+      <!-- Críticas -->
+      <ion-item>
+        <ion-label position="stacked">Camas críticas adultos</ion-label>
+        <ion-input
+          type="number"
+          min="0"
+          [(ngModel)]="camasCriticasAdultos"
+          (keydown)="bloquearNegativos($event)"
+          (ionPaste)="bloquearPegado($event)"
+          (ionInput)="validarCampo('camasCriticasAdultos', $event.detail.value)">
+        </ion-input>
+      </ion-item>
+      <small *ngIf="errores.camasCriticasAdultos">No se permiten negativos</small>
+
+    </ion-col>
+
+  </ion-row>
+
+  <!-- ======================================================= -->
+  <!-- SECCIÓN INFERIOR: AMBULATORIO (Ancho completo)          -->
+  <!-- ======================================================= -->
+  <ion-row class="ion-margin-top">
+    <ion-col size="12">
+      
+      <!-- Título centrado -->
+      <ion-item lines="none" class="ion-text-center">
+        <ion-label style="display: block; width: 100%;">
+          <h2><strong>Atención Ambulatoria</strong></h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Horas ambulatorias diarias</ion-label>
+        <ion-input
+          type="number"
+          min="0"
+          [(ngModel)]="horasAmbulatorias"
+          (keydown)="bloquearNegativos($event)"
+          (ionPaste)="bloquearPegado($event)"
+          (ionInput)="validarCampo('horasAmbulatorias', $event.detail.value)">
+        </ion-input>
+      </ion-item>
+      <small *ngIf="errores.horasAmbulatorias">No se permiten negativos</small>
+
+    </ion-col>
+  </ion-row>
+
+</ion-grid>
 
-        <!-- BASICAS -->
 
-        <ion-row>
 
-          <ion-col size="6">
-
-            <ion-item>
-
-              <ion-label position="stacked">
-                Camas básicas adultos
-              </ion-label>
-
-              <ion-input
-                type="number"
-                min="0"
-                [(ngModel)]="camasBasicasAdultos"
-                (keydown)="bloquearNegativos($event)"
-                (ionPaste)="bloquearPegado($event)"
-                (ionInput)="validarCampo(
-                  'camasBasicasAdultos',
-                  $event.detail.value)">
-              </ion-input>
-
-            </ion-item>
-
-            <small
-              *ngIf="errores.camasBasicasAdultos">
-
-              No se permiten negativos
-
-            </small>
-
-          </ion-col>
-
-          <ion-col size="6">
-
-            <ion-item>
-
-              <ion-label position="stacked">
-                Camas básicas pediátricas
-              </ion-label>
-
-              <ion-input
-                type="number"
-                min="0"
-                [(ngModel)]="camasBasicasPediatricas"
-                (keydown)="bloquearNegativos($event)"
-                (ionPaste)="bloquearPegado($event)"
-                (ionInput)="validarCampo(
-                  'camasBasicasPediatricas',
-                  $event.detail.value)">
-              </ion-input>
-
-            </ion-item>
-
-            <small
-              *ngIf="errores.camasBasicasPediatricas">
-
-              No se permiten negativos
-
-            </small>
-
-          </ion-col>
-
-        </ion-row>
-
-        <!-- MEDIAS -->
-
-        <ion-row>
-
-          <ion-col size="6">
-
-            <ion-item>
-
-              <ion-label position="stacked">
-                Camas medias adultos
-              </ion-label>
-
-              <ion-input
-                type="number"
-                min="0"
-                [(ngModel)]="camasMediasAdultos"
-                (keydown)="bloquearNegativos($event)"
-                (ionPaste)="bloquearPegado($event)"
-                (ionInput)="validarCampo(
-                  'camasMediasAdultos',
-                  $event.detail.value)">
-              </ion-input>
-
-            </ion-item>
-
-            <small
-              *ngIf="errores.camasMediasAdultos">
-
-              No se permiten negativos
-
-            </small>
-
-          </ion-col>
-
-          <ion-col size="6">
-
-            <ion-item>
-
-              <ion-label position="stacked">
-                Camas medias pediátricas
-              </ion-label>
-
-              <ion-input
-                type="number"
-                min="0"
-                [(ngModel)]="camasMediasPediatricas"
-                (keydown)="bloquearNegativos($event)"
-                (ionPaste)="bloquearPegado($event)"
-                (ionInput)="validarCampo(
-                  'camasMediasPediatricas',
-                  $event.detail.value)">
-              </ion-input>
-
-            </ion-item>
-
-            <small
-              *ngIf="errores.camasMediasPediatricas">
-
-              No se permiten negativos
-
-            </small>
-
-          </ion-col>
-
-        </ion-row>
-
-        <!-- CRITICAS -->
-
-        <ion-row>
-
-          <ion-col size="6">
-
-            <ion-item>
-
-              <ion-label position="stacked">
-                Camas críticas adultos
-              </ion-label>
-
-              <ion-input
-                type="number"
-                min="0"
-                [(ngModel)]="camasCriticasAdultos"
-                (keydown)="bloquearNegativos($event)"
-                (ionPaste)="bloquearPegado($event)"
-                (ionInput)="validarCampo(
-                  'camasCriticasAdultos',
-                  $event.detail.value)">
-              </ion-input>
-
-            </ion-item>
-
-            <small
-              *ngIf="errores.camasCriticasAdultos">
-
-              No se permiten negativos
-
-            </small>
-
-          </ion-col>
-
-          <ion-col size="6">
-
-            <ion-item>
-
-              <ion-label position="stacked">
-                Camas críticas pediátricas
-              </ion-label>
-
-              <ion-input
-                type="number"
-                min="0"
-                [(ngModel)]="camasCriticasPediatricas"
-                (keydown)="bloquearNegativos($event)"
-                (ionPaste)="bloquearPegado($event)"
-                (ionInput)="validarCampo(
-                  'camasCriticasPediatricas',
-                  $event.detail.value)">
-              </ion-input>
-
-            </ion-item>
-
-            <small
-              *ngIf="errores.camasCriticasPediatricas">
-
-              No se permiten negativos
-
-            </small>
-
-          </ion-col>
-
-        </ion-row>
-
-        <!-- AMBULATORIO -->
-
-        <ion-row>
-
-          <ion-col size="12">
-
-            <ion-item>
-
-              <ion-label position="stacked">
-                Horas ambulatorias diarias
-              </ion-label>
-
-              <ion-input
-                type="number"
-                min="0"
-                [(ngModel)]="horasAmbulatorias"
-                (keydown)="bloquearNegativos($event)"
-                (ionPaste)="bloquearPegado($event)"
-                (ionInput)="validarCampo(
-                  'horasAmbulatorias',
-                  $event.detail.value)">
-              </ion-input>
-
-            </ion-item>
-
-            <small
-              *ngIf="errores.horasAmbulatorias">
-
-              No se permiten negativos
-
-            </small>
-
-          </ion-col>
-
-        </ion-row>
-
-      </ion-grid>
 
       <!-- BOTONES -->
 
