@@ -260,16 +260,16 @@ export class HomePage {
   // CAMAS
   //---------------------------------------------------
 
-  camasBasicasAdultos: any = '';
-  camasBasicasPediatricas: any = '';
+  camasBasicasAdultos: number = 0;
+  camasBasicasPediatricas: number = 0;
 
-  camasMediasAdultos: any = '';
-  camasMediasPediatricas: any = '';
+  camasMediasAdultos: number = 0;
+  camasMediasPediatricas: number = 0;
 
-  camasCriticasAdultos: any = '';
-  camasCriticasPediatricas: any = '';
+  camasCriticasAdultos: number = 0;
+  camasCriticasPediatricas: number = 0;
 
-  horasAmbulatorias: any = '';
+  horasAmbulatorias: number = 0;
 
   //---------------------------------------------------
   // RESULTADOS
@@ -369,8 +369,10 @@ export class HomePage {
   //---------------------------------------------------
 
   bloquearNegativos(event: KeyboardEvent) {
-
-    if (event.key === '-') {
+    // Teclas que queremos prohibir en un número entero positivo
+    const teclasProhibidas = ['-', 'e', 'E', '.', ','];
+    
+    if (teclasProhibidas.includes(event.key)) {
       event.preventDefault();
     }
   }
@@ -766,16 +768,16 @@ export class HomePage {
 
     this.hospitalesFiltrados = [];
 
-    this.camasBasicasAdultos = '';
-    this.camasBasicasPediatricas = '';
+    this.camasBasicasAdultos = Number(0);
+    this.camasBasicasPediatricas = Number(0);
 
-    this.camasMediasAdultos = '';
-    this.camasMediasPediatricas = '';
+    this.camasMediasAdultos = Number(0);
+    this.camasMediasPediatricas = Number(0);
 
-    this.camasCriticasAdultos = '';
-    this.camasCriticasPediatricas = '';
+    this.camasCriticasAdultos = Number(0);
+    this.camasCriticasPediatricas = Number(0);
 
-    this.horasAmbulatorias = '';
+    this.horasAmbulatorias = Number(0);
 
     this.mostrarResultados = false;
 
