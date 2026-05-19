@@ -1,0 +1,567 @@
+<!-- home.page.html -->
+
+<ion-header>
+  <ion-toolbar color="dark">
+
+    <ion-title>
+      Dotación Fonoaudiológica MINSAL
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- ===================================== -->
+  <!-- FORMULARIO -->
+  <!-- ===================================== -->
+
+  <ion-card>
+
+    <ion-card-header>
+
+      <ion-card-title>
+        Ingreso de datos hospitalarios
+      </ion-card-title>
+
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <!-- BUSCADOR -->
+
+      <ion-searchbar
+        [(ngModel)]="hospital"
+        (ionInput)="filtrarHospitales($event)"
+        placeholder="Buscar hospital">
+      </ion-searchbar>
+
+      <!-- LISTA -->
+
+      <ion-list
+        *ngIf="hospitalesFiltrados.length > 0">
+
+        <ion-item
+          button
+          *ngFor="let h of hospitalesFiltrados"
+          (click)="seleccionarHospital(h)">
+
+          {{ h }}
+
+        </ion-item>
+
+      </ion-list>
+
+      <!-- GRID -->
+
+      <ion-grid>
+
+        <!-- BASICAS -->
+
+        <ion-row>
+
+          <ion-col size="6">
+
+            <ion-item>
+
+              <ion-label position="stacked">
+                Camas básicas adultos
+              </ion-label>
+
+              <ion-input
+                type="number"
+                min="0"
+                [(ngModel)]="camasBasicasAdultos"
+                (keydown)="bloquearNegativos($event)"
+                (ionPaste)="bloquearPegado($event)"
+                (ionInput)="validarCampo(
+                  'camasBasicasAdultos',
+                  $event.detail.value)">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              *ngIf="errores.camasBasicasAdultos">
+
+              No se permiten negativos
+
+            </small>
+
+          </ion-col>
+
+          <ion-col size="6">
+
+            <ion-item>
+
+              <ion-label position="stacked">
+                Camas básicas pediátricas
+              </ion-label>
+
+              <ion-input
+                type="number"
+                min="0"
+                [(ngModel)]="camasBasicasPediatricas"
+                (keydown)="bloquearNegativos($event)"
+                (ionPaste)="bloquearPegado($event)"
+                (ionInput)="validarCampo(
+                  'camasBasicasPediatricas',
+                  $event.detail.value)">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              *ngIf="errores.camasBasicasPediatricas">
+
+              No se permiten negativos
+
+            </small>
+
+          </ion-col>
+
+        </ion-row>
+
+        <!-- MEDIAS -->
+
+        <ion-row>
+
+          <ion-col size="6">
+
+            <ion-item>
+
+              <ion-label position="stacked">
+                Camas medias adultos
+              </ion-label>
+
+              <ion-input
+                type="number"
+                min="0"
+                [(ngModel)]="camasMediasAdultos"
+                (keydown)="bloquearNegativos($event)"
+                (ionPaste)="bloquearPegado($event)"
+                (ionInput)="validarCampo(
+                  'camasMediasAdultos',
+                  $event.detail.value)">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              *ngIf="errores.camasMediasAdultos">
+
+              No se permiten negativos
+
+            </small>
+
+          </ion-col>
+
+          <ion-col size="6">
+
+            <ion-item>
+
+              <ion-label position="stacked">
+                Camas medias pediátricas
+              </ion-label>
+
+              <ion-input
+                type="number"
+                min="0"
+                [(ngModel)]="camasMediasPediatricas"
+                (keydown)="bloquearNegativos($event)"
+                (ionPaste)="bloquearPegado($event)"
+                (ionInput)="validarCampo(
+                  'camasMediasPediatricas',
+                  $event.detail.value)">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              *ngIf="errores.camasMediasPediatricas">
+
+              No se permiten negativos
+
+            </small>
+
+          </ion-col>
+
+        </ion-row>
+
+        <!-- CRITICAS -->
+
+        <ion-row>
+
+          <ion-col size="6">
+
+            <ion-item>
+
+              <ion-label position="stacked">
+                Camas críticas adultos
+              </ion-label>
+
+              <ion-input
+                type="number"
+                min="0"
+                [(ngModel)]="camasCriticasAdultos"
+                (keydown)="bloquearNegativos($event)"
+                (ionPaste)="bloquearPegado($event)"
+                (ionInput)="validarCampo(
+                  'camasCriticasAdultos',
+                  $event.detail.value)">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              *ngIf="errores.camasCriticasAdultos">
+
+              No se permiten negativos
+
+            </small>
+
+          </ion-col>
+
+          <ion-col size="6">
+
+            <ion-item>
+
+              <ion-label position="stacked">
+                Camas críticas pediátricas
+              </ion-label>
+
+              <ion-input
+                type="number"
+                min="0"
+                [(ngModel)]="camasCriticasPediatricas"
+                (keydown)="bloquearNegativos($event)"
+                (ionPaste)="bloquearPegado($event)"
+                (ionInput)="validarCampo(
+                  'camasCriticasPediatricas',
+                  $event.detail.value)">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              *ngIf="errores.camasCriticasPediatricas">
+
+              No se permiten negativos
+
+            </small>
+
+          </ion-col>
+
+        </ion-row>
+
+        <!-- AMBULATORIO -->
+
+        <ion-row>
+
+          <ion-col size="12">
+
+            <ion-item>
+
+              <ion-label position="stacked">
+                Horas ambulatorias diarias
+              </ion-label>
+
+              <ion-input
+                type="number"
+                min="0"
+                [(ngModel)]="horasAmbulatorias"
+                (keydown)="bloquearNegativos($event)"
+                (ionPaste)="bloquearPegado($event)"
+                (ionInput)="validarCampo(
+                  'horasAmbulatorias',
+                  $event.detail.value)">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              *ngIf="errores.horasAmbulatorias">
+
+              No se permiten negativos
+
+            </small>
+
+          </ion-col>
+
+        </ion-row>
+
+      </ion-grid>
+
+      <!-- BOTONES -->
+
+      <ion-button
+        expand="block"
+        color="dark"
+        (click)="calcular()"
+        [disabled]="!validar()">
+
+        Calcular dotación
+
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        fill="outline"
+        (click)="resetear()">
+
+        Resetear
+
+      </ion-button>
+
+    </ion-card-content>
+
+  </ion-card>
+
+  <!-- ===================================== -->
+  <!-- RESULTADOS -->
+  <!-- ===================================== -->
+
+  <ion-card *ngIf="mostrarResultados">
+
+    <ion-card-header>
+
+      <ion-card-title>
+        Resultados del análisis
+      </ion-card-title>
+
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <!-- TABLA PRINCIPAL -->
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Tipo</th>
+            <th>Horas día</th>
+            <th>Horas semana</th>
+            <th>No hábil</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>Básicas adultos 30%</td>
+            <td>{{ tabla.basicas30.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.basicas30.hs | number:'1.2-2' }}</td>
+            <td>{{ tabla.basicas30.nh | number:'1.2-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Básicas adultos 70%</td>
+            <td>{{ tabla.basicas70.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.basicas70.hs | number:'1.2-2' }}</td>
+            <td>{{ tabla.basicas70.nh | number:'1.2-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Básicas pediátricas</td>
+            <td>{{ tabla.basicasPed.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.basicasPed.hs | number:'1.2-2' }}</td>
+            <td>{{ tabla.basicasPed.nh | number:'1.2-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Medias adultos</td>
+            <td>{{ tabla.mediasAdultos.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.mediasAdultos.hs | number:'1.2-2' }}</td>
+            <td>{{ tabla.mediasAdultos.nh | number:'1.2-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Medias pediátricas</td>
+            <td>{{ tabla.mediasPed.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.mediasPed.hs | number:'1.2-2' }}</td>
+            <td>{{ tabla.mediasPed.nh | number:'1.2-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Críticas adultos</td>
+            <td>{{ tabla.criticasAdultos.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.criticasAdultos.hs | number:'1.2-2' }}</td>
+            <td>{{ tabla.criticasAdultos.nh | number:'1.2-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Críticas pediátricas</td>
+            <td>{{ tabla.criticasPed.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.criticasPed.hs | number:'1.2-2' }}</td>
+            <td>{{ tabla.criticasPed.nh | number:'1.2-2' }}</td>
+          </tr>
+
+          <tr>
+            <td>Ambulatorio</td>
+            <td>{{ tabla.ambulatorio.dh | number:'1.2-2' }}</td>
+            <td>{{ tabla.ambulatorio.hs | number:'1.2-2' }}</td>
+            <td>—</td>
+          </tr>
+
+          <tr>
+
+            <td>
+              <b>Total general</b>
+            </td>
+
+            <td>
+              <b>
+                {{ tabla.total.dh | number:'1.2-2' }}
+              </b>
+            </td>
+
+            <td>
+              <b>
+                {{ tabla.total.hs | number:'1.2-2' }}
+              </b>
+            </td>
+
+            <td>
+              <b>
+                {{ tabla.total.nh | number:'1.2-2' }}
+              </b>
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+      <!-- INTERPRETACION -->
+
+      <div class="resumen">
+
+        <h2>
+          Interpretación semanal
+        </h2>
+
+        <p>
+          {{ interpretacionSemanal }}
+        </p>
+
+      </div>
+
+      <!-- RESUMEN GLOBAL -->
+
+      <ion-card *ngIf="mostrarResultados && tabla.resumen">
+
+        <ion-card-header>
+
+          <ion-card-title>
+            Distribución global de horas
+          </ion-card-title>
+
+        </ion-card-header>
+
+        <ion-card-content>
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Área</th>
+                <th>Horas semanales</th>
+                <th>%</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              <tr>
+
+                <td>Hospitalario adultos</td>
+
+                <td>
+                  {{ tabla.resumen.adultos.hs | number:'1.2-2' }}
+                </td>
+
+                <td>
+                  {{ tabla.resumen.adultos.porcentaje | number:'1.1-2' }}%
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td>Hospitalario pediátrico</td>
+
+                <td>
+                  {{ tabla.resumen.pediatricos.hs | number:'1.2-2' }}
+                </td>
+
+                <td>
+                  {{ tabla.resumen.pediatricos.porcentaje | number:'1.1-2' }}%
+                </td>
+
+              </tr>
+
+              <tr>
+
+                <td>Ambulatorio</td>
+
+                <td>
+                  {{ tabla.resumen.ambulatorio.hs | number:'1.2-2' }}
+                </td>
+
+                <td>
+                  {{ tabla.resumen.ambulatorio.porcentaje | number:'1.1-2' }}%
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </ion-card-content>
+
+      </ion-card>
+
+      <!-- NO HABILES -->
+
+      <div class="interpretacion-card">
+
+        <h3>
+          Cobertura de días no hábiles
+        </h3>
+
+        <p>
+          {{ interpretacionNoHabiles }}
+        </p>
+
+      </div>
+
+      <!-- CONTRATO -->
+
+      <div class="interpretacion-card">
+
+        <h3>
+          Sugerencia de distribución contractual
+        </h3>
+
+        <p>
+          {{ interpretacionContrato }}
+        </p>
+
+      </div>
+
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>
