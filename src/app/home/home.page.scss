@@ -1,238 +1,181 @@
+// home.page.scss
 ion-content {
-  --background: #f4f6f9;
+  --background: #f8fafc; // Gris azulado muy claro (clínico)
 }
 
-/* ===========================
-   HEADER
-=========================== */
-
+/* Header Profesional */
 ion-toolbar {
-  --background: #111827;
-  --color: white;
+  --background: #35B2BE;
+  --color: rgb(22, 22, 22);
+  --padding-top: 8px;
+  --padding-bottom: 8px;
 }
 
-ion-title {
-  font-weight: 700;
-}
-
-/* ===========================
-   CARDS
-=========================== */
-
-ion-card {
-  border-radius: 18px;
-
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.08);
-
-  margin-bottom: 18px;
-}
-
-ion-card-title {
-  font-weight: 700;
-}
-
-/* ===========================
-   INPUTS
-=========================== */
-
-ion-item {
-
-  --background: white;
-
+/* Contenedores Principales */
+.section-card {
   border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  margin: 16px;
+  border: 1px solid #d4e0ef;
+  background: #BFEDEF
+}
 
-  margin-bottom: 10px;
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  margin-top: 12px;
+}
+
+/* Agrupación Adulto/Pediatría */
+.group-pediatria {
+  background: #bfcfd9; // Azul muy claro
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid #bae6fd;
+  color: black;
+}
+
+.group-adulto {
+  background: #b0c0c9; // Rosado/Grisáceo muy claro para diferenciar
+  border-radius: 10px;
+  padding: 8px;
+  color: black;
+  border: 1px solid #fbcfe8;
+}
+
+/* Inputs mejorados */
+ion-item {
+  --background: #def9f6;
+  --border-color: #899694;
+  --padding-start: 12px;
+  margin-bottom: 8px;
+  font-size: 1.25rem;
+  border: 2px solid #899694;
+  border-radius: 15px;
+  align-items: center;
+  justify-content: center;
+  
 }
 
 ion-label {
+  color: #64748b !important;
   font-weight: 600;
+  color: black;
 }
 
-ion-searchbar {
-
-  --background: white;
-
-  --border-radius: 12px;
-
-  padding-left: 0;
-  padding-right: 0;
-}
-
-/* ===========================
-   LISTA HOSPITALES
-=========================== */
-
-ion-list {
-
-  max-height: 220px;
-
-  overflow-y: auto;
-
-  border-radius: 12px;
-
-  margin-bottom: 15px;
-
-  border: 1px solid #ddd;
-}
-
-/* ===========================
-   BOTONES
-=========================== */
-
-ion-button {
-
-  margin-top: 12px;
-
-  height: 46px;
-
-  font-weight: 700;
-
-  --border-radius: 12px;
-}
-
-/* ===========================
-   ERRORES
-=========================== */
-
-small {
-
-  color: #dc2626;
-
-  font-size: 0.8rem;
-
-  margin-left: 6px;
-}
-
-/* ===========================
-   TABLA
-=========================== */
-
-table {
-
+/* Tabla de Resultados tipo Informe */
+.results-table {
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
 
-  border-collapse: collapse;
+  thead {
+    background: #475569;
+    color: white;
+    th { padding: 12px; text-align: left; font-size: 0.8rem; text-transform: uppercase; }
+    
+  }
 
-  margin-top: 10px;
+  tbody {
+    td { padding: 12px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 0.9rem; } //font-variant-numeric: tabular-nums; text-align: right;
+    tr:nth-child(even) { background: #f8fafc; }
 
-  background: white;
+    
+  }
+
+  td:nth-child(2),
+  td:nth-child(3) {
+    text-align: left;
+    font-variant-numeric: stacked-fractions;
+    font-family: monospace;
+  }
+
+  
 }
 
-thead {
-
-  background: #111827;
-
-  color: white;
+/* Cuadros de Interpretación */
+.interpretation-box {
+  background: #b5e1e3;
+  border: 1px solid #79bbc3;
+  padding: 16px;
+  margin-top: 16px;
+  border-radius: 8px;
+  
+  h3 { margin: 0 0 8px 0; font-size: 1.25rem; font-weight: bold ; color: #0a0a0a; }
+  p { margin: 0; font-size: 1rem; line-height: 1.5; color: #070707; }
 }
 
-th {
-
-  padding: 10px;
-
-  text-align: left;
-
-  font-size: 0.85rem;
-}
-
-td {
-
-  padding: 10px;
-
-  border-bottom: 1px solid #e5e7eb;
-
-  font-size: 0.9rem;
-}
-
-tbody tr:last-child {
-
-  background: #f3f4f6;
-
-  font-weight: bold;
-}
-
-/* ===========================
-   RESUMEN
-=========================== */
-
-.resumen {
-
-  margin-top: 20px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #111827,
-      #1f2937
-    );
-
-  color: white;
-
+.summary-highlight {
+  background: #1e293b;
+  color: #f1f5f9;
   padding: 20px;
-
-  border-radius: 16px;
+  border-radius: 12px;
+  text-align: center;
+  margin: 16px 0;
+  
+  h2 { font-size: 2rem; margin: 8px 0; color: #38bdf8; }
+  span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
 }
 
-.resumen h2 {
+/* Botones */
+.btn-calculate {
+  --background: #66e5db;
+  --border-radius: 8px;
+  font-weight: 600;
+  height: 50px;
+  margin: 16px;
+  color: #1e293b;
 
-  margin-top: 0;
-
-  margin-bottom: 12px;
 }
 
-.resumen p {
-
-  line-height: 1.7;
+.boton-rojo {
+  --background: rgb(246, 195, 195); /* Esta es la variable que Ionic reconoce */
+  --color: rgb(252, 9, 9);    /* Para que el texto sea blanco y se lea bien */
+  margin: 16px;
 }
 
-/* ===========================
-   INTERPRETACIONES
-=========================== */
-
-.interpretacion-card {
-
-  margin-top: 18px;
-
-  background: white;
-
-  border-left: 5px solid #111827;
-
-  padding: 18px;
-
-  border-radius: 14px;
-
-  box-shadow:
-    0 2px 8px rgba(0,0,0,0.05);
+.total-row-b {
+  background-color: #475569 ;
+  color: white;
 }
 
-.interpretacion-card h3 {
 
-  margin-top: 0;
 
-  color: #111827;
+.total-general {
+  background-color: #475569;
+  color: white;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  /* El borde se define aquí pero se visualiza en las celdas */
 }
 
-.interpretacion-card p {
-
-  line-height: 1.7;
-
-  color: #374151;
+/* Aplicamos la magia a las celdas (td) */
+.total-general td {
+  padding: 15px 10px;       /* Esto controla la altura y el centrado vertical */
+  vertical-align: middle;
+  border-top: 1px solid #0e0f10;
+  border-bottom: 1px solid #0e0f10;
 }
 
-/* ===========================
-   RESPONSIVE
-=========================== */
+/* Redondeamos solo las esquinas exteriores */
+.total-general td:first-child {
+  border-left: 1px solid #0e0f10;
+  border-radius: 8px 0 0 8px;
+  padding-left: 15px;
+}
 
-@media (max-width: 768px) {
-
-  table {
-
-    font-size: 0.8rem;
-  }
-
-  th,
-  td {
-
-    padding: 6px;
-  }
+.total-general td:last-child {
+  border-right: 1px solid #0e0f10;
+  border-radius: 0 8px 8px 0;
+  text-align: left;
+  padding-right: 15px;
 }

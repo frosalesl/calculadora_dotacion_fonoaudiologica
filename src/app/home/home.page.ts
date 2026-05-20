@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { trashOutline, trash } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 import {
   IonContent,
+  IonIcon,
   IonHeader,
   IonTitle,
   IonToolbar,
@@ -30,9 +33,9 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-
     IonContent,
     IonHeader,
+    IonIcon,
     IonTitle,
     IonToolbar,
     IonCard,
@@ -52,6 +55,11 @@ import {
 })
 
 export class HomePage {
+
+  constructor() {
+    // Registras el icono para que Ionic lo pueda renderizar
+    addIcons({ trashOutline, trash });
+  }
 
   //---------------------------------------------------
   // HOSPITAL
@@ -368,35 +376,40 @@ export class HomePage {
   // VALIDACIONES
   //---------------------------------------------------
 
-  bloquearNegativos(event: KeyboardEvent) {
-    // Teclas que queremos prohibir en un número entero positivo
-    const teclasProhibidas = ['-', 'e', 'E', '.', ','];
+  
+
+  
+
+  validarCampo(campo: string, valor: any) {
+  // 1. Forzar a entero positivo
+  if (valor !== null && valor !== undefined && valor !== '') {
+    const stringValor = String(valor);
+    const soloNumeros = stringValor.replace(/[^0-9]/g, ''); // Elimina cualquier cosa que no sea número
+    const num = parseInt(soloNumeros, 10);
     
+    // Asignar el valor limpio de vuelta a la variable
+    (this as any)[campo] = isNaN(num) ? 0 : num;
+  } else {
+    (this as any)[campo] = 0;
+  }
+
+  // 2. Marcar error si es NaN (aunque el paso anterior lo previene)
+  this.errores[campo as keyof typeof this.errores] = isNaN((this as any)[campo]);
+}
+
+// Asegurarse de que el cálculo use los valores ya limpios
+parseNumero(valor: any): number {
+  if (!valor) return 0;
+  const n = parseInt(String(valor), 10);
+  return isNaN(n) ? 0 : n;
+}
+
+// Bloqueo de teclas punto y coma además de negativos
+  bloquearNegativos(event: KeyboardEvent) {
+    const teclasProhibidas = ['-', 'e', 'E', '.', ',', '+'];
     if (teclasProhibidas.includes(event.key)) {
       event.preventDefault();
     }
-  }
-
-  bloquearPegado(event: any) {
-
-    const texto =
-      event.clipboardData.getData('text');
-
-    if (texto.includes('-')) {
-      event.preventDefault();
-    }
-  }
-
-  validarCampo(campo: string, valor: any) {
-
-    const limpio =
-      String(valor).replace(',', '.');
-
-    const num = Number(limpio);
-
-    this.errores[
-      campo as keyof typeof this.errores
-    ] = isNaN(num) || num < 0;
   }
 
   validar(): boolean {
@@ -411,14 +424,7 @@ export class HomePage {
     );
   }
 
-  parseNumero(valor: any): number {
-
-    if (!valor) return 0;
-
-    return Number(
-      String(valor).replace(',', '.')
-    );
-  }
+  
 
   //---------------------------------------------------
   // CALCULO PRINCIPAL
