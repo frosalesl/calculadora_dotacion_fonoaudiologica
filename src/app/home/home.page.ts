@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { trashOutline, trash, bedOutline,  personOutline,  thermometerSharp, bagHandleSharp , bandageSharp, personRemoveOutline,personRemoveSharp,personAddSharp, medicalOutline, medicalSharp ,bagAddSharp} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 import {
   IonContent,
+  
+  IonIcon,
   IonHeader,
   IonTitle,
   IonToolbar,
@@ -14,6 +18,7 @@ import {
   IonItem,
   IonLabel,
   IonInput,
+  IonImg,
   IonButton,
   IonGrid,
   IonRow,
@@ -30,10 +35,11 @@ import {
   imports: [
     CommonModule,
     FormsModule,
-
     IonContent,
     IonHeader,
+    IonIcon,
     IonTitle,
+    IonImg,
     IonToolbar,
     IonCard,
     IonCardHeader,
@@ -52,6 +58,11 @@ import {
 })
 
 export class HomePage {
+
+  constructor() {
+    // Registras el icono para que Ionic lo pueda renderizar
+    addIcons({ trashOutline, trash, bedOutline,  personOutline, thermometerSharp, bagHandleSharp, bandageSharp, personRemoveOutline, personRemoveSharp, personAddSharp, medicalOutline, medicalSharp, bagAddSharp });
+  }
 
   //---------------------------------------------------
   // HOSPITAL
@@ -269,7 +280,10 @@ export class HomePage {
   camasCriticasAdultos: number = 0;
   camasCriticasPediatricas: number = 0;
 
-  horasAmbulatorias: number = 0;
+  horasAmbulatorias: number = 0;  //<!--aca modificamos -->
+  horasAmbulatoriasPediatricas: number = 0;
+  horasAmbulatoriasAdultos: number = 0;
+
 
   //---------------------------------------------------
   // RESULTADOS
@@ -279,32 +293,42 @@ export class HomePage {
 
   tabla: any = {
 
-    basicas30: {},
-    basicas70: {},
+    basicas30: {},// no la ocuparemos
+    basicas70: {},// no la ocuparemos
+    basicasadulto100: {},
     basicasPed: {},
 
     mediasAdultos: {},
     mediasPed: {},
 
-    criticasAdultos: {},
+    criticasAdulto: {},
     criticasPed: {},
 
-    ambulatorio: {},
+    
+    ambulatorioAdulto: {},
+    ambulatorioPediatrico: {},
+    totalAmbulatorio: {},
+
     total: {},
 
     resumen: {
 
-      adultos: {
+      hospitalizadoAdulto: {
         hs: 0,
         porcentaje: 0
       },
 
-      pediatricos: {
+      hospitalizadoPediatrico: {
         hs: 0,
         porcentaje: 0
       },
 
-      ambulatorio: {
+      ambulatorioAdulto: {
+        hs: 0,
+        porcentaje: 0
+      },
+
+      ambulatorioPediatrico: {
         hs: 0,
         porcentaje: 0
       }
@@ -312,6 +336,7 @@ export class HomePage {
   };
 
   interpretacionSemanal = '';
+  interpretacionClinica = '';
   interpretacionNoHabiles = '';
   interpretacionContrato = '';
 
@@ -319,6 +344,33 @@ export class HomePage {
   porcentajeAmbulatorio = 0;
 
   jce = 0;
+
+
+  //---------------------------------------------------
+  // interpretaciones
+  //---------------------------------------------------
+  interpretacionGeneral = '';
+  interpretacionDiaNoHabil = '';
+
+  interpretacionHospitalariaPediatrica = '';
+  interpretacionHospitalariaAdultos = '';
+
+  interpretacionAmbulatoriaPediatrica = '';
+  interpretacionAmbulatoriaAdultos = '';
+
+  continuidadTotal = '';
+  continuidadPediatrica = '';
+  continuidadAdultos = '';
+
+  contractualTotal = '';
+  contractualPediatrica = '';
+  contractualAdultos = '';
+
+  cobertura7DiasTotal = '';
+  cobertura7DiasPediatrica = '';
+  cobertura7DiasAdultos = '';
+
+  textoFinalObligatorio = '';
 
   //---------------------------------------------------
   // ERRORES
@@ -335,7 +387,9 @@ export class HomePage {
     camasCriticasAdultos: false,
     camasCriticasPediatricas: false,
 
-    horasAmbulatorias: false
+    horasAmbulatorias: false,
+    ambulatorioAdulto: false,
+    ambulatorioPediatrico: false
   };
 
   //---------------------------------------------------
@@ -368,35 +422,36 @@ export class HomePage {
   // VALIDACIONES
   //---------------------------------------------------
 
-  bloquearNegativos(event: KeyboardEvent) {
-    // Teclas que queremos prohibir en un número entero positivo
-    const teclasProhibidas = ['-', 'e', 'E', '.', ','];
+  validarCampo(campo: string, valor: any) {
+  // 1. Forzar a entero positivo
+  if (valor !== null && valor !== undefined && valor !== '') {
+    const stringValor = String(valor);
+    const soloNumeros = stringValor.replace(/[^0-9]/g, ''); // Elimina cualquier cosa que no sea número
+    const num = parseInt(soloNumeros, 10);
     
+    // Asignar el valor limpio de vuelta a la variable
+    (this as any)[campo] = isNaN(num) ? 0 : num;
+  } else {
+    (this as any)[campo] = 0;
+  }
+
+  // 2. Marcar error si es NaN (aunque el paso anterior lo previene)
+  this.errores[campo as keyof typeof this.errores] = isNaN((this as any)[campo]);
+}
+
+// Asegurarse de que el cálculo use los valores ya limpios
+parseNumero(valor: any): number {///aca revisar
+  if (!valor) return 0;
+  const n = parseInt(String(valor), 10);
+  return isNaN(n) ? 0 : n;
+}
+
+// Bloqueo de teclas punto y coma además de negativos
+  bloquearNegativos(event: KeyboardEvent) {
+    const teclasProhibidas = ['-', 'e', 'E', '.', ',', '+'];
     if (teclasProhibidas.includes(event.key)) {
       event.preventDefault();
     }
-  }
-
-  bloquearPegado(event: any) {
-
-    const texto =
-      event.clipboardData.getData('text');
-
-    if (texto.includes('-')) {
-      event.preventDefault();
-    }
-  }
-
-  validarCampo(campo: string, valor: any) {
-
-    const limpio =
-      String(valor).replace(',', '.');
-
-    const num = Number(limpio);
-
-    this.errores[
-      campo as keyof typeof this.errores
-    ] = isNaN(num) || num < 0;
   }
 
   validar(): boolean {
@@ -411,14 +466,73 @@ export class HomePage {
     );
   }
 
-  parseNumero(valor: any): number {
+//---------------------------------------------------
+  // CALCULO interpretaciones
+  //---------------------------------------------------
 
-    if (!valor) return 0;
 
-    return Number(
-      String(valor).replace(',', '.')
-    );
+
+  private generarTextoContinuidad(nh: number, tipo: 'total' | 'pediatrica' | 'adultos'): string {
+  const horas = nh.toFixed(2);
+
+  if (tipo === 'total') {
+    if (nh < 4.5) {
+      return `La estimación de continuidad asistencial para la atención cerrada (hospitalaria) para días no hábiles corresponde a ${horas} horas diarias. Dado que la carga estimada es inferior a 4,5 horas diarias, se sugiere que cada institución evalúe alternativas de cobertura mediante extensión horaria, horas extraordinarias u otros mecanismos locales según necesidad asistencial.`;
+    }
+    if (nh < 8) {
+      return `La estimación de continuidad asistencial para la atención cerrada (hospitalaria) para días no hábiles corresponde a ${horas} horas diarias. La carga proyectada sugiere la implementación de cobertura profesional organizada durante días no hábiles, considerando programación institucional y continuidad clínica según demanda asistencial.`;
+    }
+    return `La estimación de continuidad asistencial para la atención cerrada (hospitalaria) para días no hábiles corresponde a ${horas} horas diarias. La carga asistencial proyectada respalda la implementación formal de cobertura clínica permanente durante días no hábiles, considerando organización institucional de turnos y continuidad operativa.`;
   }
+
+  if (tipo === 'pediatrica') {
+    if (nh < 4.5) {
+      return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios pediátricos corresponde a ${horas} horas diarias estimadas para días no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar mecanismos flexibles de cobertura pediátrica según necesidad institucional.`;
+    }
+    if (nh < 8) {
+      return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios pediátricos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios pediátricos durante días no hábiles.`;
+    }
+    return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios pediátricos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes pediátricos durante días no hábiles.`;
+  }
+
+  if (nh < 4.5) {
+    return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios adultos corresponde a ${horas} horas diarias estimadas para días no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar alternativas de cobertura flexible según requerimientos institucionales.`;
+  }
+  if (nh < 8) {
+    return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios adultos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios adultos durante días no hábiles.`;
+  }
+  return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios adultos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes adultos durante días no hábiles.`;
+}
+
+private generarTextoContractual(horas: number): { t44: string; t22: string; tComp: string } {
+  const cargos44 = Math.floor(horas / 44);
+  const horasRestantes = horas - (cargos44 * 44);
+
+  let cargos22 = 0;
+  let horasComplementarias = horasRestantes;
+
+  if (horasRestantes >= 22) {
+    cargos22 = Math.floor(horasRestantes / 22);
+    horasComplementarias = horasRestantes - (cargos22 * 22);
+  }
+
+  let t44 = '';
+  let t22 = '';
+  let tComp = '';
+
+  if (cargos44 === 1) t44 = '1 jornada completa de 44 horas.';
+  if (cargos44 > 1) t44 = `${cargos44} jornadas completas de 44 horas.`;
+
+  if (cargos22 === 1) t22 = '1 jornada parcial de 22 horas.';
+  if (cargos22 > 1) t22 = `${cargos22} jornadas parciales de 22 horas.`;
+
+  const compRedondeadas = Number(horasComplementarias.toFixed(2));
+  if (compRedondeadas === 1) tComp = '1 hora complementaria adicional.';
+  if (compRedondeadas > 0 && compRedondeadas !== 1) tComp = `${compRedondeadas} horas complementarias adicionales.`;
+
+  return { t44, t22, tComp };
+}
+  
 
   //---------------------------------------------------
   // CALCULO PRINCIPAL
@@ -429,10 +543,34 @@ export class HomePage {
     if (!this.validar()) return;
 
     //-------------------------------------------------
+    // codigo ia
+    //-------------------------------------------------
+
+    const cbAdultoTotal = this.camasBasicasAdultos || 0;
+
+    const cba30 = cbAdultoTotal * 0.3; //cba30 = camas basicas adultos 30% (no la ocuparemos)
+
+    const cba70 = cbAdultoTotal * 0.7;//cba70 = camas basicas adultos 70% (no la ocuparemos)
+
+    this.tabla.basicas30 = {
+      dh: cba30,//dias habiles
+      hs: (cba30 / 10) * 0.06,//horas semanales
+      nh: (cba30 / 10) * 0.06 //no habiles
+    };
+    this.tabla.basicas70 = {
+      dh: cba70,
+      hs: (cba70 / 10) * 0.23, // Factor de Cama Media
+      nh: (cba70 / 10) * 0.23
+    };
+
+    
+
+
+    //-------------------------------------------------
     // VARIABLES
     //-------------------------------------------------
 
-    const CBA =
+    const CBA =//camas basicas adultos
       this.parseNumero(
         this.camasBasicasAdultos
       );
@@ -462,10 +600,23 @@ export class HomePage {
         this.camasCriticasPediatricas
       );
 
-    const H =
+    const HA =
       this.parseNumero(
-        this.horasAmbulatorias
+        this.horasAmbulatoriasAdultos
       );
+
+    const HP =
+      this.parseNumero(
+        this.horasAmbulatoriasPediatricas
+      );
+
+    this.tabla.ambulatorioAdulto = {
+      dh: HA / 5, // El valor que viene del input
+      hs: HA,
+      nh: 0
+    };
+
+
 
     //-------------------------------------------------
     // FORMULA PAPER / MINSAL
@@ -476,6 +627,12 @@ export class HomePage {
 
     const basicasAdultos70 =
       (((CBA * 0.7) / 10) * 0.23) * 44;
+
+    const basicasAdultos100 =
+      basicasAdultos30 +
+      basicasAdultos70;
+
+   
 
     const basicasPediatricas =
       ((CBP / 10) * 0.06) * 44;
@@ -509,26 +666,40 @@ export class HomePage {
       criticasAdultos +
       criticasPediatricas;
 
+
+       const porcentBasicaAdultos100 = (basicasAdultos100 / hospitalarioBase)*100;
+       const porcentBasicaPediatricas = (basicasPediatricas / hospitalarioBase)*100;
+       const porcentMediasAdultos = (mediasAdultos / hospitalarioBase)*100;
+       const porcentMediasPediatricas = (mediasPediatricas / hospitalarioBase)*100;
+       const porcentCriticasAdultos = (criticasAdultos / hospitalarioBase)*100;
+       const porcentCriticasPediatricas = (criticasPediatricas / hospitalarioBase)*100;
+
     //-------------------------------------------------
     // AMBULATORIO
     //-------------------------------------------------
 
     const ambulatorioSemanal =
-      H * 5;
+      HA   + HP;
 
     //-------------------------------------------------
     // DESCUENTO PROPORCIONAL
     //-------------------------------------------------
+                // transformar a porcentaje cada componente del hospitalario base
+    //const totalBase =
+      //hospitalarioBase +
+      //ambulatorioSemanal;
 
-    const totalBase =
-      hospitalarioBase +
-      ambulatorioSemanal;
+
+    const remanenteHospitalario =
+      hospitalarioBase -
+      ambulatorioSemanal; //input desde el cliente
+
 
     const factorHospitalario =
 
       ambulatorioSemanal > 0
 
-      ? hospitalarioBase / totalBase
+      ?  (remanenteHospitalario / hospitalarioBase ) 
 
       : 1;
 
@@ -542,6 +713,10 @@ export class HomePage {
 
     const ba70 =
       basicasAdultos70 *
+      factorHospitalario;
+
+    const ba100 =
+      basicasAdultos100 *
       factorHospitalario;
 
     const bp =
@@ -568,7 +743,7 @@ export class HomePage {
     // TOTALES
     //-------------------------------------------------
 
-    const totalHospitalario =
+    const totalHospitalarioAjustado =
 
       ba30 +
       ba70 +
@@ -578,9 +753,9 @@ export class HomePage {
       ca +
       cp;
 
-    const totalSemanal =
+    const totalSemanalAjustado =
 
-      totalHospitalario +
+      totalHospitalarioAjustado +
       ambulatorioSemanal;
 
     //-------------------------------------------------
@@ -606,26 +781,30 @@ export class HomePage {
 
     this.porcentajeHospitalario =
 
-      totalSemanal === 0
+      totalSemanalAjustado === 0
 
       ? 0
 
-      : (totalHospitalario / totalSemanal) * 100;
+      : (totalHospitalarioAjustado / totalSemanalAjustado) * 100;
 
     this.porcentajeAmbulatorio =
 
-      totalSemanal === 0
+      totalSemanalAjustado === 0
 
       ? 0
 
-      : (ambulatorioSemanal / totalSemanal) * 100;
+      : (ambulatorioSemanal / totalSemanalAjustado) * 100;
 
     //-------------------------------------------------
     // JCE
     //-------------------------------------------------
+      const jceHospitalario = hospitalarioBase / 44;
+      //const jceAjustado = totalSemanalAjustado / 44
+      const jceRemanente = remanenteHospitalario / 44;
 
-    this.jce =
-      totalSemanal / 44;
+    this.jce = jceHospitalario > jceRemanente   /////esta es la importante
+      ? jceHospitalario
+      : jceRemanente;
 
     //-------------------------------------------------
     // TABLA
@@ -643,6 +822,12 @@ export class HomePage {
         dh: ba70 / 5,
         hs: ba70,
         nh: ba70 / 5
+      },
+
+      basicasadultos100: {
+        dh: ba100 / 5,
+        hs: ba100,
+        nh: ba100 / 5
       },
 
       basicasPed: {
@@ -676,42 +861,62 @@ export class HomePage {
       },
 
       ambulatorio: {
-        dh: H,
+        dh: ambulatorioSemanal / 5,
         hs: ambulatorioSemanal,
+        nh: 0
+      },
+
+      ambulatorioAdulto: {
+        dh: HA / 5,
+        hs: HA,
+        nh: 0   
+      },
+
+      ambulatorioPediatrico: {
+        dh: HP / 5,
+        hs: HP,
         nh: 0
       },
 
       resumen: {
 
-        adultos: {
+        hospitalizadoAdultos: {
           hs: totalAdultos,
           porcentaje:
-            totalSemanal === 0
+            totalSemanalAjustado === 0
             ? 0
-            : (totalAdultos / totalSemanal) * 100
+            : (totalAdultos / totalSemanalAjustado) * 100
         },
 
-        pediatricos: {
+        hospitalizadoPediatricos: {
           hs: totalPediatricos,
           porcentaje:
-            totalSemanal === 0
+            totalSemanalAjustado === 0
             ? 0
-            : (totalPediatricos / totalSemanal) * 100
+            : (totalPediatricos / totalSemanalAjustado) * 100
         },
 
-        ambulatorio: {
+        ambulatorioAdulto: {
           hs: ambulatorioSemanal,
           porcentaje:
-            totalSemanal === 0
+            totalSemanalAjustado === 0
             ? 0
-            : (ambulatorioSemanal / totalSemanal) * 100
+            : (ambulatorioSemanal / totalSemanalAjustado) * 100
+        },
+
+        ambulatorioPediatrico: {
+          hs: ambulatorioSemanal,
+          porcentaje:
+            totalSemanalAjustado === 0
+            ? 0
+            : (ambulatorioSemanal / totalSemanalAjustado) * 100
         }
       },
 
       total: {
-        dh: totalSemanal / 5,
-        hs: totalSemanal,
-        nh: totalHospitalario / 5
+        dh: totalSemanalAjustado / 5,
+        hs: totalSemanalAjustado,
+        nh: totalHospitalarioAjustado / 5
       }
     };
 
@@ -719,13 +924,51 @@ export class HomePage {
     // INTERPRETACIONES
     //-------------------------------------------------
 
+    const totalHoras = this.tabla.total.hs;
+    const jceTotal = (totalHoras / 44).toFixed(2);
+    const nhTotal = this.tabla.total.nh;
+
+    const horasPediatricas = (this.tabla.basicasPed.hs || 0) + (this.tabla.mediasPed.hs || 0) + (this.tabla.criticasPed.hs || 0);
+    const jcePed = (horasPediatricas / 44).toFixed(2);
+    const pctPed = totalHoras > 0 ? ((horasPediatricas / totalHoras) * 100).toFixed(1) : '0';
+
+    const horasAdultos = (this.tabla.basicas30.hs + this.tabla.basicas70.hs) + (this.tabla.mediasAdultos.hs || 0) + (this.tabla.criticasAdultos.hs || 0);
+    const jceAdulto = (horasAdultos / 44).toFixed(3);
+    const pctAdulto = totalHoras > 0 ? ((horasAdultos / totalHoras) * 100).toFixed(1) : '0';
+    //---------------------------------------------------
+  // codigo ia 
+  //---------------------------------------------------
+    this.interpretacionSemanal = `La estimación de dotación fonoaudiológica para el ${this.hospital} corresponde a ${totalHoras.toFixed(1)} horas semanales de lunes a viernes, equivalentes a ${jceTotal} JCE. 
+  
+    Días no hábiles: ${nhTotal.toFixed(1)} horas por cada día.`;
+
+    this.interpretacionClinica = `DISTRIBUCIÓN:
+    - Área Pediátrica: ${horasPediatricas.toFixed(1)} hrs (${jcePed} JCE), representando el ${pctPed}% de la carga total.
+    - Área Adultos: ${horasAdultos.toFixed(1)} hrs (${jceAdulto} JCE), representando el ${pctAdulto}% de la carga total.
+    
+    Continuidad Adultos (Sáb-Dom): ${(this.tabla.total.nh * 2).toFixed(1)} horas estimadas.`;
+
+    // Texto Final Obligatorio según el protocolo
+    this.interpretacionContrato = `Los resultados entregados corresponden a una estimación referencial de dotación fonoaudiológica basada en capacidad instalada hospitalaria y continuidad asistencial. Se recomienda que cada establecimiento supervise el desempeño profesional para garantizar cobertura efectiva.`;
+
+    this.mostrarResultados = true;
+
+
+
+  //---------------------------------------------------
+  // codigo ia
+  //---------------------------------------------------
+
+
+
+
     this.interpretacionSemanal =
 
       `La dotación estimada corresponde a
       ${this.jce.toFixed(2)}
       jornadas completas equivalentes (JCE),
       equivalente a
-      ${totalSemanal.toFixed(2)}
+      ${totalSemanalAjustado.toFixed(2)}
       horas semanales de cobertura
       fonoaudiológica.
 
@@ -739,7 +982,7 @@ export class HomePage {
 
       `La propuesta de cobertura para días
       no hábiles corresponde a
-      ${(totalHospitalario / 5).toFixed(2)}
+      ${(totalHospitalarioAjustado / 5).toFixed(2)}
       horas diarias de continuidad
       hospitalaria.`;
 
@@ -754,6 +997,68 @@ export class HomePage {
     //-------------------------------------------------
 
     this.mostrarResultados = true;
+
+    const horasAmbPediatricas = HP;
+    const horasAmbAdultos = HA;
+
+    const jceAmbPediatricas = horasAmbPediatricas / 44;
+    const jceAmbAdultos = horasAmbAdultos / 44;
+
+    const nhPediatricos = ((bp + mp + cp) / 5);
+    const nhAdultos = ((ba30 + ba70 + ma + ca) / 5);
+
+    const total7Dias = totalHoras + (nhTotal * 2);
+    const total7DiasPediatrico = horasPediatricas + (nhPediatricos * 2);
+    const total7DiasAdultos = horasAdultos + (nhAdultos * 2);
+
+    const contractualTotalCalc = this.generarTextoContractual(totalHoras);
+    const contractualPedCalc = this.generarTextoContractual(horasPediatricas);
+    const contractualAdultosCalc = this.generarTextoContractual(horasAdultos);
+
+    this.interpretacionGeneral =
+      `La estimación de dotación fonoaudiológica para el ${this.hospital} corresponde a ${totalHoras.toFixed(2)} horas semanales de lunes a viernes, equivalentes a ${jceTotal} JCE de fonoaudiología.`;
+
+    this.interpretacionDiaNoHabil =
+      `La estimación de dotación fonoaudiológica para el ${this.hospital} corresponde a ${nhTotal.toFixed(2)} horas por cada día no hábil.`;
+
+    this.interpretacionHospitalariaPediatrica =
+      `La distribución de dotación fonoaudiológica total para usuarios pediátricos hospitalizados corresponde a ${horasPediatricas.toFixed(2)} horas semanales, equivalentes a ${jcePed} JCE, representando el ${pctPed}% de la carga total.`;
+
+    this.interpretacionHospitalariaAdultos =
+      `La distribución de dotación fonoaudiológica total para usuarios adultos hospitalizados corresponde a ${horasAdultos.toFixed(2)} horas semanales, equivalentes a ${jceAdulto} JCE, representando el ${pctAdulto}% de la carga clínica total.`;
+
+    this.interpretacionAmbulatoriaPediatrica =
+      `La distribución de dotación fonoaudiológica total para usuarios pediátricos ambulatorios corresponde a ${horasAmbPediatricas.toFixed(2)} horas semanales, equivalentes a ${(jceAmbPediatricas).toFixed(2)} JCE.`;
+
+    this.interpretacionAmbulatoriaAdultos =
+      `La distribución de dotación fonoaudiológica total para usuarios adultos ambulatorios corresponde a ${horasAmbAdultos.toFixed(2)} horas semanales, equivalentes a ${(jceAmbAdultos).toFixed(2)} JCE.`;
+
+    this.continuidadTotal = this.generarTextoContinuidad(nhTotal, 'total');
+    this.continuidadPediatrica = this.generarTextoContinuidad(nhPediatricos, 'pediatrica');
+    this.continuidadAdultos = this.generarTextoContinuidad(nhAdultos, 'adultos');
+
+    this.contractualTotal =
+      `La estimación institucional corresponde a ${totalHoras.toFixed(2)} horas semanales equivalentes a ${jceTotal} JCE de fonoaudiología. Según la carga asistencial proyectada, se sugiere la siguiente distribución referencial: ${contractualTotalCalc.t44} ${contractualTotalCalc.t22} ${contractualTotalCalc.tComp}`.trim();
+
+    this.contractualPediatrica =
+      `La estimación pediátrica corresponde a ${horasPediatricas.toFixed(2)} horas semanales equivalentes a ${jcePed} JCE de fonoaudiología. Según la carga asistencial pediátrica proyectada, se sugiere la siguiente distribución referencial: ${contractualPedCalc.t44} ${contractualPedCalc.t22} ${contractualPedCalc.tComp}`.trim();
+
+    this.contractualAdultos =
+      `La estimación de usuarios adultos corresponde a ${horasAdultos.toFixed(2)} horas semanales equivalentes a ${jceAdulto} JCE de fonoaudiología. Según la carga asistencial adulta proyectada, se sugiere la siguiente distribución referencial: ${contractualAdultosCalc.t44} ${contractualAdultosCalc.t22} ${contractualAdultosCalc.tComp}`.trim();
+
+    this.cobertura7DiasTotal =
+      `La cobertura institucional continua corresponde a ${total7Dias.toFixed(2)} horas totales semanales, considerando ${totalHoras.toFixed(2)} horas correspondientes a cobertura de lunes a viernes y ${(nhTotal * 2).toFixed(2)} horas correspondientes a continuidad asistencial estimada para sábado y domingo.`;
+
+    this.cobertura7DiasPediatrica =
+      `La cobertura continua pediátrica corresponde a ${total7DiasPediatrico.toFixed(2)} horas totales semanales, considerando ${horasPediatricas.toFixed(2)} horas correspondientes a cobertura pediátrica de lunes a viernes y ${(nhPediatricos * 2).toFixed(2)} horas correspondientes a continuidad asistencial pediátrica estimada para sábado y domingo.`;
+
+    this.cobertura7DiasAdultos =
+      `La cobertura continua de usuarios adultos corresponde a ${total7DiasAdultos.toFixed(2)} horas totales semanales, considerando ${horasAdultos.toFixed(2)} horas correspondientes a cobertura de usuarios adultos de lunes a viernes y ${(nhAdultos * 2).toFixed(2)} horas correspondientes a continuidad asistencial de usuarios adultos estimada para sábado y domingo.`;
+
+    this.textoFinalObligatorio =
+      `Los resultados entregados corresponden a una estimación referencial de dotación fonoaudiológica basada en capacidad instalada hospitalaria y continuidad asistencial. Se recomienda que cada establecimiento supervise el correcto desempeño de los profesionales dentro de las horas asignadas a actividades clínicas, con el objetivo de garantizar continuidad, oportunidad y cobertura efectiva de atención para los usuarios.`;
+
+
   }
 
   //---------------------------------------------------
