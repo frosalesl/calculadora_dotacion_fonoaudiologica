@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { trashOutline, trash, bedOutline,  personOutline,  thermometerSharp, bagHandleSharp , bandageSharp, personRemoveOutline,personRemoveSharp,personAddSharp, medicalOutline, medicalSharp ,bagAddSharp} from 'ionicons/icons';
+import { businessOutline, statsChartOutline, trashOutline, trash, bedOutline,  personOutline,  thermometerSharp, bagHandleSharp , bandageSharp, personRemoveOutline,personRemoveSharp,personAddSharp, medicalOutline, medicalSharp ,bagAddSharp} from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 import {
@@ -60,9 +60,14 @@ import {
 export class HomePage {
 
   constructor() {
-    // Registras el icono para que Ionic lo pueda renderizar
-    addIcons({ trashOutline, trash, bedOutline,  personOutline, thermometerSharp, bagHandleSharp, bandageSharp, personRemoveOutline, personRemoveSharp, personAddSharp, medicalOutline, medicalSharp, bagAddSharp });
-  }
+      // Asignas una propiedad de texto personalizada a cada ícono importado
+      addIcons({ 
+        'business-outline': businessOutline, 
+        'stats-chart-outline': statsChartOutline,
+        'trash-outline': trashOutline,
+        'medical-outline': medicalOutline
+      });
+    }
 
   //---------------------------------------------------
   // HOSPITAL
@@ -423,30 +428,30 @@ export class HomePage {
   //---------------------------------------------------
 
   validarCampo(campo: string, valor: any) {
-  // 1. Forzar a entero positivo
-  if (valor !== null && valor !== undefined && valor !== '') {
-    const stringValor = String(valor);
-    const soloNumeros = stringValor.replace(/[^0-9]/g, ''); // Elimina cualquier cosa que no sea número
-    const num = parseInt(soloNumeros, 10);
-    
-    // Asignar el valor limpio de vuelta a la variable
-    (this as any)[campo] = isNaN(num) ? 0 : num;
-  } else {
-    (this as any)[campo] = 0;
+    // 1. Forzar a entero positivo
+    if (valor !== null && valor !== undefined && valor !== '') {
+      const stringValor = String(valor);
+      const soloNumeros = stringValor.replace(/[^0-9]/g, ''); // Elimina cualquier cosa que no sea número
+      const num = parseInt(soloNumeros, 10);
+      
+      // Asignar el valor limpio de vuelta a la variable
+      (this as any)[campo] = isNaN(num) ? 0 : num;
+    } else {
+      (this as any)[campo] = 0;
+    }
+
+    // 2. Marcar error si es NaN (aunque el paso anterior lo previene)
+    this.errores[campo as keyof typeof this.errores] = isNaN((this as any)[campo]);
   }
 
-  // 2. Marcar error si es NaN (aunque el paso anterior lo previene)
-  this.errores[campo as keyof typeof this.errores] = isNaN((this as any)[campo]);
-}
+  // Asegurarse de que el cálculo use los valores ya limpios
+  parseNumero(valor: any): number {
+    if (!valor) return 0;
+    const n = parseInt(String(valor), 10);
+    return isNaN(n) ? 0 : n;
+  }
 
-// Asegurarse de que el cálculo use los valores ya limpios
-parseNumero(valor: any): number {///aca revisar
-  if (!valor) return 0;
-  const n = parseInt(String(valor), 10);
-  return isNaN(n) ? 0 : n;
-}
-
-// Bloqueo de teclas punto y coma además de negativos
+  // Bloqueo de teclas punto y coma además de negativos
   bloquearNegativos(event: KeyboardEvent) {
     const teclasProhibidas = ['-', 'e', 'E', '.', ',', '+'];
     if (teclasProhibidas.includes(event.key)) {
@@ -455,14 +460,25 @@ parseNumero(valor: any): number {///aca revisar
   }
 
   validar(): boolean {
+    // 1. Comprobar que no existan errores de tipeo activos
+    const hayErrores = Object.values(this.errores).some(e => e);
 
-    const hayErrores =
-      Object.values(this.errores)
-      .some(e => e);
+    // 2. Condición Crítica: Sumar todas las camas para asegurar que al menos una sea mayor a 0
+    const tieneAlMenosUnaCama = (
+      this.parseNumero(this.camasBasicasPediatricas) > 0 ||
+      this.parseNumero(this.camasMediasPediatricas) > 0 ||
+      this.parseNumero(this.camasCriticasPediatricas) > 0 ||
+      this.parseNumero(this.camasBasicasAdultos) > 0 ||
+      this.parseNumero(this.camasMediasAdultos) > 0 ||
+      this.parseNumero(this.camasCriticasAdultos) > 0
+    );
 
+    // El botón se habilitará SOLO si se cumplen las 3 condiciones:
+    // Hospital elegido AND cero errores de formato AND al menos una cama cargada
     return (
       this.hospitalSeleccionado &&
-      !hayErrores
+      !hayErrores &&
+      tieneAlMenosUnaCama
     );
   }
 
@@ -477,31 +493,31 @@ parseNumero(valor: any): number {///aca revisar
 
   if (tipo === 'total') {
     if (nh < 4.5) {
-      return `La estimación de continuidad asistencial para la atención cerrada (hospitalaria) para días no hábiles corresponde a ${horas} horas diarias. Dado que la carga estimada es inferior a 4,5 horas diarias, se sugiere que cada institución evalúe alternativas de cobertura mediante extensión horaria, horas extraordinarias u otros mecanismos locales según necesidad asistencial.`;
+      return `-General: se estima un total de ${horas} horas diarias en jornadas no hábiles. Dado que la carga estimada es inferior a 4,5 horas diarias, se sugiere que cada institución evalúe alternativas de cobertura mediante extensión horaria, horas extraordinarias u otros mecanismos locales según necesidad asistencial.`;
     }
     if (nh < 8) {
-      return `La estimación de continuidad asistencial para la atención cerrada (hospitalaria) para días no hábiles corresponde a ${horas} horas diarias. La carga proyectada sugiere la implementación de cobertura profesional organizada durante días no hábiles, considerando programación institucional y continuidad clínica según demanda asistencial.`;
+      return `-General: se estima un total de ${horas} horas diarias en jornadas no hábiles. La carga proyectada sugiere la implementación de cobertura profesional organizada durante días no hábiles, considerando programación institucional y continuidad clínica según demanda asistencial.`;
     }
-    return `La estimación de continuidad asistencial para la atención cerrada (hospitalaria) para días no hábiles corresponde a ${horas} horas diarias. La carga asistencial proyectada respalda la implementación formal de cobertura clínica permanente durante días no hábiles, considerando organización institucional de turnos y continuidad operativa.`;
+    return `-General: se estima un total de ${horas} horas diarias en jornadas no hábiles. La carga asistencial proyectada respalda la implementación formal de cobertura clínica permanente durante días no hábiles, considerando organización institucional de turnos y continuidad operativa.`;
   }
 
   if (tipo === 'pediatrica') {
     if (nh < 4.5) {
-      return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios pediátricos corresponde a ${horas} horas diarias estimadas para días no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar mecanismos flexibles de cobertura pediátrica según necesidad institucional.`;
+      return `-Usuarios pediátricos: se estima un total de ${horas} horas diarias en jornadas no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar mecanismos flexibles de cobertura pediátrica según necesidad institucional.`;
     }
     if (nh < 8) {
-      return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios pediátricos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios pediátricos durante días no hábiles.`;
+      return `-Usuarios pediátricos: se estima un total de ${horas} horas diarias en jornadas no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios pediátricos.`;
     }
-    return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios pediátricos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes pediátricos durante días no hábiles.`;
+    return `-Usuarios pediátricos: se estima un total de ${horas} horas diarias en jornadas no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes pediátricos.`;
   }
 
   if (nh < 4.5) {
-    return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios adultos corresponde a ${horas} horas diarias estimadas para días no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar alternativas de cobertura flexible según requerimientos institucionales.`;
+    return `-Usuarios adultos: se estima un total de ${horas} horas diarias en jornadas no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar alternativas de cobertura flexible según requerimientos institucionales.`;
   }
   if (nh < 8) {
-    return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios adultos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios adultos durante días no hábiles.`;
+    return `-Usuarios adultos: se estima un total de ${horas} horas diarias en jornadas no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios adultos.`;
   }
-  return `La estimación de la continuidad asistencial para la atención cerrada (hospitalaria) de usuarios adultos corresponde a ${horas} horas diarias estimadas para días no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes adultos durante días no hábiles.`;
+  return `-Usuarios adultos: se estima un total de ${horas} horas diarias en jornadas no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes adultos.`;
 }
 
 private generarTextoContractual(horas: number): { t44: string; t22: string; tComp: string } {
@@ -953,51 +969,6 @@ private generarTextoContractual(horas: number): { t44: string; t22: string; tCom
 
     this.mostrarResultados = true;
 
-
-
-  //---------------------------------------------------
-  // codigo ia
-  //---------------------------------------------------
-
-
-
-
-    this.interpretacionSemanal =
-
-      `La dotación estimada corresponde a
-      ${this.jce.toFixed(2)}
-      jornadas completas equivalentes (JCE),
-      equivalente a
-      ${totalSemanalAjustado.toFixed(2)}
-      horas semanales de cobertura
-      fonoaudiológica.
-
-      Del total calculado,
-      ${this.porcentajeHospitalario.toFixed(1)}%
-      corresponde a atención hospitalaria y
-      ${this.porcentajeAmbulatorio.toFixed(1)}%
-      a atención ambulatoria.`;
-
-    this.interpretacionNoHabiles =
-
-      `La propuesta de cobertura para días
-      no hábiles corresponde a
-      ${(totalHospitalarioAjustado / 5).toFixed(2)}
-      horas diarias de continuidad
-      hospitalaria.`;
-
-    this.interpretacionContrato =
-
-      `Se recomienda distribuir la jornada
-      clínica según el perfil asistencial
-      del establecimiento, equilibrando
-      actividades hospitalarias y
-      ambulatorias.`;
-
-    //-------------------------------------------------
-
-    this.mostrarResultados = true;
-
     const horasAmbPediatricas = HP;
     const horasAmbAdultos = HA;
 
@@ -1016,46 +987,46 @@ private generarTextoContractual(horas: number): { t44: string; t22: string; tCom
     const contractualAdultosCalc = this.generarTextoContractual(horasAdultos);
 
     this.interpretacionGeneral =
-      `La estimación de dotación fonoaudiológica para el ${this.hospital} corresponde a ${totalHoras.toFixed(2)} horas semanales de lunes a viernes, equivalentes a ${jceTotal} JCE de fonoaudiología.`;
+      `-La estimación de dotación fonoaudiológica para el ${this.hospital} corresponde a ${totalHoras.toFixed(2)} horas semanales de lunes a viernes, equivalentes a ${jceTotal} JCE de fonoaudiología.`;
 
     this.interpretacionDiaNoHabil =
-      `La estimación de dotación fonoaudiológica para el ${this.hospital} corresponde a ${nhTotal.toFixed(2)} horas por cada día no hábil.`;
+      `-La estimación de dotación fonoaudiológica para el ${this.hospital} corresponde a ${nhTotal.toFixed(2)} horas por cada día no hábil.`;
 
     this.interpretacionHospitalariaPediatrica =
-      `La distribución de dotación fonoaudiológica total para usuarios pediátricos hospitalizados corresponde a ${horasPediatricas.toFixed(2)} horas semanales, equivalentes a ${jcePed} JCE, representando el ${pctPed}% de la carga total.`;
+      `-Usuarios pediátricos: se estima un total de ${horasPediatricas.toFixed(2)} horas semanales, equivalentes a ${jcePed} JCE, representando el ${pctPed}% de la carga total.`;
 
     this.interpretacionHospitalariaAdultos =
-      `La distribución de dotación fonoaudiológica total para usuarios adultos hospitalizados corresponde a ${horasAdultos.toFixed(2)} horas semanales, equivalentes a ${jceAdulto} JCE, representando el ${pctAdulto}% de la carga clínica total.`;
+      `-Usuarios adultos: se estima un total de ${horasAdultos.toFixed(2)} horas semanales, equivalentes a ${jceAdulto} JCE, representando el ${pctAdulto}% de la carga clínica total.`;
 
     this.interpretacionAmbulatoriaPediatrica =
-      `La distribución de dotación fonoaudiológica total para usuarios pediátricos ambulatorios corresponde a ${horasAmbPediatricas.toFixed(2)} horas semanales, equivalentes a ${(jceAmbPediatricas).toFixed(2)} JCE.`;
+      `-Usuarios pediátricos: se estima un total de ${horasAmbPediatricas.toFixed(2)} horas semanales, equivalentes a ${(jceAmbPediatricas).toFixed(2)} JCE.`;
 
     this.interpretacionAmbulatoriaAdultos =
-      `La distribución de dotación fonoaudiológica total para usuarios adultos ambulatorios corresponde a ${horasAmbAdultos.toFixed(2)} horas semanales, equivalentes a ${(jceAmbAdultos).toFixed(2)} JCE.`;
+      `-Usuarios adultos: se estima un total de${horasAmbAdultos.toFixed(2)} horas semanales, equivalentes a ${(jceAmbAdultos).toFixed(2)} JCE.`;
 
     this.continuidadTotal = this.generarTextoContinuidad(nhTotal, 'total');
     this.continuidadPediatrica = this.generarTextoContinuidad(nhPediatricos, 'pediatrica');
     this.continuidadAdultos = this.generarTextoContinuidad(nhAdultos, 'adultos');
 
     this.contractualTotal =
-      `La estimación institucional corresponde a ${totalHoras.toFixed(2)} horas semanales equivalentes a ${jceTotal} JCE de fonoaudiología. Según la carga asistencial proyectada, se sugiere la siguiente distribución referencial: ${contractualTotalCalc.t44} ${contractualTotalCalc.t22} ${contractualTotalCalc.tComp}`.trim();
+      `-Sugerencia  general: La estimación institucional corresponde a ${totalHoras.toFixed(2)} horas semanales equivalentes a ${jceTotal} JCE de fonoaudiología. Según la carga asistencial proyectada, se sugiere la siguiente distribución referencial: ${contractualTotalCalc.t44} ${contractualTotalCalc.t22} ${contractualTotalCalc.tComp}`.trim();
 
     this.contractualPediatrica =
-      `La estimación pediátrica corresponde a ${horasPediatricas.toFixed(2)} horas semanales equivalentes a ${jcePed} JCE de fonoaudiología. Según la carga asistencial pediátrica proyectada, se sugiere la siguiente distribución referencial: ${contractualPedCalc.t44} ${contractualPedCalc.t22} ${contractualPedCalc.tComp}`.trim();
+      `-Sugerencia usuarios pediátricos: La estimación para la atención de usuarios pediátricos corresponde a ${horasPediatricas.toFixed(2)} horas semanales equivalentes a ${jcePed} JCE de fonoaudiología. Según la carga asistencial pediátrica proyectada, se sugiere la siguiente distribución referencial: ${contractualPedCalc.t44} ${contractualPedCalc.t22} ${contractualPedCalc.tComp}`.trim();
 
     this.contractualAdultos =
-      `La estimación de usuarios adultos corresponde a ${horasAdultos.toFixed(2)} horas semanales equivalentes a ${jceAdulto} JCE de fonoaudiología. Según la carga asistencial adulta proyectada, se sugiere la siguiente distribución referencial: ${contractualAdultosCalc.t44} ${contractualAdultosCalc.t22} ${contractualAdultosCalc.tComp}`.trim();
+      `-Sugerencia usuarios adultos: La estimación para la atención de usuarios adultos corresponde a ${horasAdultos.toFixed(2)} horas semanales equivalentes a ${jceAdulto} JCE de fonoaudiología. Según la carga asistencial adulta proyectada, se sugiere la siguiente distribución referencial: ${contractualAdultosCalc.t44} ${contractualAdultosCalc.t22} ${contractualAdultosCalc.tComp}`.trim();
 
     this.cobertura7DiasTotal =
-      `La cobertura institucional continua corresponde a ${total7Dias.toFixed(2)} horas totales semanales, considerando ${totalHoras.toFixed(2)} horas correspondientes a cobertura de lunes a viernes y ${(nhTotal * 2).toFixed(2)} horas correspondientes a continuidad asistencial estimada para sábado y domingo.`;
+      `-Cobertura global: la cobertura fonoaudiológica institucional estimada para continuidad asistencial de 7 días corresponde a ${total7Dias.toFixed(2)} horas semanales, distribuidas en ${totalHoras.toFixed(2)} horas de atención entre lunes y viernes y ${(nhTotal * 2).toFixed(2)} horas destinadas a continuidad asistencial durante sábados, domingos y festivos.`;
 
     this.cobertura7DiasPediatrica =
-      `La cobertura continua pediátrica corresponde a ${total7DiasPediatrico.toFixed(2)} horas totales semanales, considerando ${horasPediatricas.toFixed(2)} horas correspondientes a cobertura pediátrica de lunes a viernes y ${(nhPediatricos * 2).toFixed(2)} horas correspondientes a continuidad asistencial pediátrica estimada para sábado y domingo.`;
+      `-Cobertura atención usuarios pediátricos: la cobertura fonoaudiológica pediátrica estimada para continuidad asistencial de 7 días corresponde a ${total7DiasPediatrico.toFixed(2)} horas semanales, distribuidas en ${horasPediatricas.toFixed(2)} horas de atención entre lunes y viernes y ${(nhPediatricos * 2).toFixed(2)} horas destinadas a continuidad asistencial pediátrica durante sábados, domingos y festivos.`;
 
     this.cobertura7DiasAdultos =
-      `La cobertura continua de usuarios adultos corresponde a ${total7DiasAdultos.toFixed(2)} horas totales semanales, considerando ${horasAdultos.toFixed(2)} horas correspondientes a cobertura de usuarios adultos de lunes a viernes y ${(nhAdultos * 2).toFixed(2)} horas correspondientes a continuidad asistencial de usuarios adultos estimada para sábado y domingo.`;
-
-    this.textoFinalObligatorio =
+      `-Cobertura atención usuarios adultos: la cobertura fonoaudiológica de usuarios adultos estimada para continuidad asistencial de 7 días corresponde a ${total7DiasAdultos.toFixed(2)} horas semanales, distribuidas en ${horasAdultos.toFixed(2)} horas de atención entre lunes y viernes y ${(nhAdultos * 2).toFixed(2)} horas destinadas a continuidad asistencial de usuarios adultos durante sábados, domingos y festivos.`;
+    
+      this.textoFinalObligatorio =
       `Los resultados entregados corresponden a una estimación referencial de dotación fonoaudiológica basada en capacidad instalada hospitalaria y continuidad asistencial. Se recomienda que cada establecimiento supervise el correcto desempeño de los profesionales dentro de las horas asignadas a actividades clínicas, con el objetivo de garantizar continuidad, oportunidad y cobertura efectiva de atención para los usuarios.`;
 
 
