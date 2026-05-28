@@ -1,6 +1,14 @@
+
+
+
+
+
+
+
+
 // home.page.scss
 ion-content {
-  --background: #f8fafc; // Gris azulado muy claro (clínico)
+  --background: #f8fafc;
 }
 
 /* Header Profesional */
@@ -9,6 +17,7 @@ ion-toolbar {
   --color: rgb(22, 22, 22);
   --padding-top: 8px;
   --padding-bottom: 8px;
+  padding-left: 350px;
 }
 
 /* Contenedores Principales */
@@ -17,7 +26,7 @@ ion-toolbar {
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   margin: 16px;
   border: 1px solid #d4e0ef;
-  background: #BFEDEF
+  background: #BFEDEF;
 }
 
 .section-title {
@@ -27,25 +36,56 @@ ion-toolbar {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 12px;
-  margin-top: 12px;
+  margin: 12px 0;
 }
 
 /* Agrupación Adulto/Pediatría */
-.group-pediatria {
-  background: #bfcfd9; // Azul muy claro
+.group-pediatria,
+.group-informacion,
+.group-adulto {
+  background: #b0c0c9;
   border-radius: 10px;
   padding: 8px;
-  border: 1px solid #bae6fd;
   color: black;
+  border: 1px solid #2d2d2d;
+}
+
+.group-informacion {
+  border-color: #363536;
 }
 
 .group-adulto {
-  background: #b0c0c9; // Rosado/Grisáceo muy claro para diferenciar
-  border-radius: 10px;
-  padding: 8px;
-  color: black;
-  border: 1px solid #fbcfe8;
+  border-color: #232323;
+}
+
+.h3-info {
+  font-size: 14px;
+  text-align: left;
+  min-width: 170px;
+}
+
+.h6-info {
+  font-size: 12.5px;
+  text-align: left;
+  padding-left: 135px;
+}
+
+.h6-info-especial {
+  font-size: 12.5px;
+  text-align: left;
+  padding-left: 135px;
+  color: red;
+  font-weight: bold;
+}
+
+.input {
+  text-align: right;
+}
+
+.fila-detalle {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 /* Inputs mejorados */
@@ -59,59 +99,152 @@ ion-item {
   border-radius: 15px;
   align-items: center;
   justify-content: center;
-  
 }
 
 ion-label {
-  color: #64748b !important;
   font-weight: 600;
-  color: black;
+  color: black !important;
 }
 
-/* Tabla de Resultados tipo Informe */
+/* Tabla de Resultados */
 .results-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  table-layout: fixed;
+  border-collapse: collapse;
   margin-top: 15px;
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
+  background: white;
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: 36%;
+    text-align: left;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 16%;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3) {
+    width: 24%;
+  }
+
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 24%;
+  }
 
   thead {
     background: #475569;
     color: white;
-    th { padding: 12px; text-align: left; font-size: 0.8rem; text-transform: uppercase; }
-    
+
+    th {
+      padding: 18px 20px;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-transform: uppercase;
+      white-space: nowrap;
+      vertical-align: middle;
+      border: none;
+    }
   }
 
   tbody {
-    td { padding: 12px; border-bottom: 1px solid #f1f5f9; color: #1e293b; font-size: 0.9rem; } //font-variant-numeric: tabular-nums; text-align: right;
-    tr:nth-child(even) { background: #f8fafc; }
+    tr:nth-child(odd) {
+      background: #bfe7eb;
+    }
 
-    
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    td {
+      padding: 18px 20px;
+      border-bottom: 1px solid #d9e6ee;
+      color: #1e293b;
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  th:nth-child(2),
+  th:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(2),
+  td:nth-child(3),
+  td:nth-child(4) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+}
+
+/* Fila total */
+.total-general {
+  background-color: #475569 !important;
+  color: white;
+
+  td {
+    padding: 18px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    vertical-align: middle;
+    color: white;
+    border-top: 1px solid #0e0f10;
+    border-bottom: 1px solid #0e0f10;
+    white-space: nowrap;
+  }
+
+  td:first-child {
+    text-align: left;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
   }
 
   td:nth-child(2),
-  td:nth-child(3) {
-    text-align: left;
-    font-variant-numeric: stacked-fractions;
-    font-family: monospace;
+  td:nth-child(3),
+  td:nth-child(4) {
+    text-align: right;
   }
 
-  
+  td:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
 }
 
 /* Cuadros de Interpretación */
-.interpretation-box {
-  background: #b5e1e3;
+.interpretation-box-clinica,
+.interpretation-box-no-habil {
+  background: #c7dcdd;
   border: 1px solid #79bbc3;
   padding: 16px;
   margin-top: 16px;
   border-radius: 8px;
-  
-  h3 { margin: 0 0 8px 0; font-size: 1.25rem; font-weight: bold ; color: #0a0a0a; }
-  p { margin: 0; font-size: 1rem; line-height: 1.5; color: #070707; }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #0a0a0a;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #070707;
+  }
 }
 
 .summary-highlight {
@@ -121,9 +254,18 @@ ion-label {
   border-radius: 12px;
   text-align: center;
   margin: 16px 0;
-  
-  h2 { font-size: 2rem; margin: 8px 0; color: #38bdf8; }
-  span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+  h2 {
+    font-size: 2rem;
+    margin: 8px 0;
+    color: #38bdf8;
+  }
+
+  span {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
 }
 
 /* Botones */
@@ -134,48 +276,39 @@ ion-label {
   height: 50px;
   margin: 16px;
   color: #1e293b;
-
 }
 
 .boton-rojo {
-  --background: rgb(246, 195, 195); /* Esta es la variable que Ionic reconoce */
-  --color: rgb(252, 9, 9);    /* Para que el texto sea blanco y se lea bien */
+  --background: rgb(246, 195, 195);
+  --color: rgb(252, 9, 9);
   margin: 16px;
 }
 
-.total-row-b {
-  background-color: #475569 ;
-  color: white;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  ion-toolbar {
+    padding-left: 16px;
+  }
 
+  .results-table {
+    th,
+    td {
+      padding: 10px 8px;
+      font-size: 0.8rem;
+    }
 
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 40%;
+    }
 
-.total-general {
-  background-color: #475569;
-  color: white;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  /* El borde se define aquí pero se visualiza en las celdas */
-}
-
-/* Aplicamos la magia a las celdas (td) */
-.total-general td {
-  padding: 15px 10px;       /* Esto controla la altura y el centrado vertical */
-  vertical-align: middle;
-  border-top: 1px solid #0e0f10;
-  border-bottom: 1px solid #0e0f10;
-}
-
-/* Redondeamos solo las esquinas exteriores */
-.total-general td:first-child {
-  border-left: 1px solid #0e0f10;
-  border-radius: 8px 0 0 8px;
-  padding-left: 15px;
-}
-
-.total-general td:last-child {
-  border-right: 1px solid #0e0f10;
-  border-radius: 0 8px 8px 0;
-  text-align: left;
-  padding-right: 15px;
+    th:nth-child(2),
+    td:nth-child(2),
+    th:nth-child(3),
+    td:nth-child(3),
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 20%;
+    }
+  }
 }
