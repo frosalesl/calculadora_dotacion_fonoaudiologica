@@ -1,9 +1,7 @@
 <ion-header class="ion-no-border">
-  <ion-img slot="start" src="assets/icon/Dofo_logo_5.png" class="logo"></ion-img>
   <ion-toolbar>
-    
-    
-    <ion-title>Herramienta de Estimación de Dotación Fonoaudiológica para Hospitales Públicos en Chile</ion-title>
+    <ion-img slot="start" src="assets/Dofo logo 5mini.png" class="logo"></ion-img>
+    <ion-title>Herramienta Piloto para la Estimación de Dotación Fonoaudiológica en Hospitales Públicos en Chile</ion-title> 
   </ion-toolbar>
 </ion-header>
 
@@ -16,13 +14,15 @@
       <ion-searchbar 
         [(ngModel)]="hospital" 
         (ionInput)="filtrarHospitales($event)"
-        placeholder="Buscar hospital..."
+        placeholder="Busque el hospital a consultar"
         mode="ios">
       </ion-searchbar>
       
       <ion-list *ngIf="hospitalesFiltrados.length > 0" class="search-results">
         <ion-item button *ngFor="let h of hospitalesFiltrados" (click)="seleccionarHospital(h)">
-          <ion-label>{{ h }}</ion-label>
+          <ion-label class="ion-text-wrap">
+            {{ h }}
+          </ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -31,7 +31,7 @@
   <ion-card class="section-card" *ngIf="hospitalSeleccionado">
     <ion-card-content>
       <div class="section-title">
-        <ion-icon name="stats-chart-outline"></ion-icon> Numero de Camas Hospitalarias (Capacidad Instalada)
+        <ion-icon name="stats-chart-outline"></ion-icon> Ingreso de Datos
       </div>
 
       <ion-grid class="ion-no-padding">
@@ -39,33 +39,33 @@
           <ion-col size="12" size-md="8" class="ion-padding-bottom">
             <div class="group-informacion">
               <ion-item lines="none" class="ion-text-center">
-                <ion-label color="primary"><strong>DETALLE</strong></ion-label>
+                <ion-label color="primary"><strong>Total</strong></ion-label>
               </ion-item>
 
               <ion-item lines="none" class="ion-text-center">
                 <div class="fila-detalle">
-                  <h3 class="h3-info" position="stacked"><STRONG>CAMAS BÁSICAS:</STRONG> <!--<ion-icon name="bed-outline" color="primary"></ion-icon><ion-icon name="medical-sharp" color="danger" ></ion-icon>--></h3>
+                  <h3 class="h3-info" position="stacked"><STRONG>Camas Básicas:</STRONG> <!--<ion-icon name="bed-outline" color="primary"></ion-icon><ion-icon name="medical-sharp" color="danger" ></ion-icon>--></h3>
                   <H6 class="h6-info">Destinadas a pacientes con baja dependencia que requieren hospitalización o cuidados postoperatorios menores.</H6>
                 </div>
               </ion-item>
 
               <ion-item lines="none" class="ion-text-center">
                 <div class="fila-detalle">
-                  <h3  class="h3-info" position="stacked"><strong>CAMAS MEDIAS:</strong></h3>
+                  <h3  class="h3-info" position="stacked"><strong>Camas Medias:</strong></h3>
                   <h6 class="h6-info">Orientadas a pacientes clínicamente estables pero que presentan requerimientos medios y/o dependencia moderada.</h6>
                 </div>
               </ion-item>
 
               <ion-item lines="none" class="ion-text-center">
                 <div class="fila-detalle">
-                  <h3 class="h3-info" position="stacked"><strong>CAMAS CRÍTICAS:</strong></h3>
+                  <h3 class="h3-info" position="stacked"><strong>Camas Críticas:</strong></h3>
                   <h6 class="h6-info">De alta complejidad para pacientes con alteraciones orgánicas graves que amenazan su vida o función vital.</h6>
               </div>
               </ion-item>
 
               <ion-item lines="none" class="ion-text-center">
                 <div class="fila-detalle">
-                  <h3 class="h3-info"- position="stacked"><strong> AMBULATORIA:</strong></h3>
+                  <h3 class="h3-info"- position="stacked"><strong> Horas Ambulatorias:</strong></h3>
                   <h6 class="h6-info-especial">Total de horas semanales programadas de todos los fonoaudiólogos del hospital.</h6>
                 </div>
               </ion-item>
@@ -76,7 +76,7 @@
           <ion-col size="6" size-md="2" class="ion-padding-bottom">
             <div class="group-pediatria">
               <ion-item lines="none" class="ion-text-center">
-                <ion-label color="primary"><strong>ÁREA PEDIÁTRICA </strong></ion-label>
+                <ion-label color="primary"><strong>Atención Pediátrica </strong></ion-label>
               </ion-item>
               <!-- icono camas -->
 
@@ -102,7 +102,7 @@
           <ion-col size="6" size-md="2" class="ion-padding-bottom" >
             <div class="group-adulto">
               <ion-item lines="none" class="ion-text-center">
-                <ion-label color="tertiary"><strong>ÁREA ADULTOS </strong></ion-label>
+                <ion-label color="tertiary"><strong>Atención Adultos </strong></ion-label>
               </ion-item>
               
               <ion-item fill="outline">
@@ -124,13 +124,7 @@
             </div>
           </ion-col>
         </ion-row>
-
-
-      
-
-
       </ion-grid>
-
 
       <ion-button expand="block" class="btn-calculate" (click)="calcular()" [disabled]="!validar()">
         GENERAR INFORME DE DOTACIÓN
@@ -146,42 +140,17 @@
   <div *ngIf="mostrarResultados" class="ion-padding-bottom">
     <ion-card class="section-card">
       <ion-card-content>
-        <!--<div class="summary-highlight">
-          <span>Jornadas Completas (JCE)</span>
-          <h2>{{ jce | number:'1.2-2' }}</h2>
-          <p>{{ tabla.total.hs | number:'1.1-1' }} horas semanales totales</p>
-          <P>Para efectos de esta calculadora, una jornada completa equivalente (JCE) corresponde a una jornada laboral de 44 horas semanales</P>
-        </div>-->
-
-        <div class="section-title">Detalle de Distribución</div>
+        <div class="section-title">Detalle de Distribución de Horas Diarias, Semanales y Sugerencia para Días No Hábiles</div>
         <table class="results-table">
           <thead>
             <tr>
               <th>Servicio</th>
-              <th>Horas Día</th>
+              <th>Horas Diarias</th>
               <th>Horas Semanales</th>
-              <th>Horas Día No hábil</th>
+              <th>Horas Días No Hábiles</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngIf="tabla.basicasadultos100.hs > 0">
-              <td>Camas Básicas Adultos<ion-icon name="medical-outline" color="danger"></ion-icon></td>
-              <td>{{ tabla.basicasadultos100.dh | number:'1.2-2' }}</td>
-              <td>{{ tabla.basicasadultos100.hs | number:'1.2-2' }}</td>
-              <td>{{ tabla.basicasadultos100.nh | number:'1.2-2' }}</td>
-            </tr>
-            <tr *ngIf="tabla.mediasAdultos.hs > 0">
-              <td>Camas Medias Adultos<ion-icon name="medical-outline" color="danger"></ion-icon><ion-icon name="medical-outline" color="danger"></ion-icon></td>
-              <td>{{ tabla.mediasAdultos.dh | number:'1.2-2' }}</td>
-              <td>{{ tabla.mediasAdultos.hs | number:'1.2-2' }}</td>
-              <td>{{ tabla.mediasAdultos.nh | number:'1.2-2' }}</td>
-            </tr>
-            <tr *ngIf="tabla.criticasAdultos.hs > 0">
-              <td>Camas Críticas Adultos<ion-icon name="medical-outline" color="danger"></ion-icon><ion-icon name="medical-outline" color="danger"></ion-icon><ion-icon name="medical-outline" color="danger"></ion-icon></td>
-              <td>{{ tabla.criticasAdultos.dh | number:'1.2-2' }}</td>
-              <td>{{ tabla.criticasAdultos.hs | number:'1.2-2' }}</td>
-              <td>{{ tabla.criticasAdultos.nh | number:'1.2-2' }}</td>
-            </tr>
 
             <tr *ngIf="tabla.basicasPed.hs > 0">
               <td>Camas Básicas Pediatría<ion-icon name="medical-outline" color="danger"></ion-icon></td>
@@ -204,14 +173,6 @@
               <td>{{ tabla.criticasPed.nh | number:'1.2-2' }}</td>
             </tr>
 
-            <tr *ngIf="tabla.ambulatorioAdulto.hs > 0"><!--cambiar  los datos asume que estan en cero-->
-              <td>Atención Ambulatoria Adultos</td>
-              <td>{{ tabla.ambulatorioAdulto.dh | number:'1.2-2' }}</td>
-              <td>{{ tabla.ambulatorioAdulto.hs | number:'1.2-2' }}</td>
-              <td>-----</td>
-              
-            </tr>
-
             <tr *ngIf="tabla.ambulatorioPediatrico.hs > 0"><!--cambiar  los datos asume que estan en cero-->
               <td>Atención Ambulatoria Pediatría</td>
               <td>{{ tabla.ambulatorioPediatrico.dh | number:'1.2-2' }}</td>
@@ -219,11 +180,35 @@
               <td>-----</td>
             </tr>
 
+            <tr *ngIf="tabla.basicasadultos100.hs > 0">
+              <td>Camas Básicas Adultos<ion-icon name="medical-outline" color="danger"></ion-icon></td>
+              <td>{{ tabla.basicasadultos100.dh | number:'1.2-2' }}</td>
+              <td>{{ tabla.basicasadultos100.hs | number:'1.2-2' }}</td>
+              <td>{{ tabla.basicasadultos100.nh | number:'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="tabla.mediasAdultos.hs > 0">
+              <td>Camas Medias Adultos<ion-icon name="medical-outline" color="danger"></ion-icon><ion-icon name="medical-outline" color="danger"></ion-icon></td>
+              <td>{{ tabla.mediasAdultos.dh | number:'1.2-2' }}</td>
+              <td>{{ tabla.mediasAdultos.hs | number:'1.2-2' }}</td>
+              <td>{{ tabla.mediasAdultos.nh | number:'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="tabla.criticasAdultos.hs > 0">
+              <td>Camas Críticas Adultos<ion-icon name="medical-outline" color="danger"></ion-icon><ion-icon name="medical-outline" color="danger"></ion-icon><ion-icon name="medical-outline" color="danger"></ion-icon></td>
+              <td>{{ tabla.criticasAdultos.dh | number:'1.2-2' }}</td>
+              <td>{{ tabla.criticasAdultos.hs | number:'1.2-2' }}</td>
+              <td>{{ tabla.criticasAdultos.nh | number:'1.2-2' }}</td>
+            </tr>
 
+            <tr *ngIf="tabla.ambulatorioAdulto.hs > 0"><!--cambiar  los datos asume que estan en cero-->
+              <td>Atención Ambulatoria Adultos</td>
+              <td>{{ tabla.ambulatorioAdulto.dh | number:'1.2-2' }}</td>
+              <td>{{ tabla.ambulatorioAdulto.hs | number:'1.2-2' }}</td>
+              <td>-----</td>
+            </tr>
 
           </tbody>
             <tr class="total-general" >
-                  <td >TOTAL GENERAL</td>
+                  <td >TOTAL GENERAL DE HORAS</td>
                   <td >{{ tabla.total.dh | number:'1.2-2' }}</td>
                   <td >{{ tabla.total.hs | number:'1.2-2' }}</td>
                    <td>
@@ -237,80 +222,75 @@
         </table>
         <br>
         <div class="summary-highlight">
-          <span>Jornada Completa Equivalente (JCE)</span>
+          <span>Jornada Completa Equivalente (JCE) Semanal*</span>
           <h2>{{ jce | number:'1.2-2' }}</h2><!--3.38-->
-          <p>{{ tabla.total.hs | number:'1.2-2' }} horas semanales totales</p><!--148.9-->
-          <P>Para efectos de esta calculadora, una jornada completa equivalente (JCE) corresponde a una jornada laboral de 44 horas semanales</P>
+          <p>Cálculo basado en las {{ tabla.total.hs | number:'1.2-2' }} horas semanales totales, equivalentes a {{ tabla.total.dh | number:'1.2-2' }} horas diarias totales</p>
+          <P>*Una JCE corresponde a una jornada laboral de 44 horas semanales</P>
+          
         </div>
         <br>
 
-        <div class="section-title">Interpretación</div>
-
+        <div class="section-title">Interpretación General Semanal</div>
+        <!--  //Es repetitivo, me gustaría borrarlo.
         <div class="interpretation-box-clinica">
           <h3>Interpretación general</h3>
           <p>{{ interpretacionGeneral }}</p>
           <p>{{ interpretacionDiaNoHabil }}</p>
         </div>
+        -->
 
         <div class="interpretation-box-clinica">
-          <h3>Distribución hospitalaria</h3>
+          <h3>Distribución Dotación Fonoaudiológica Hospitalaria</h3>
           <p>{{ interpretacionHospitalariaPediatrica }}</p>
           <p>{{ interpretacionHospitalariaAdultos }}</p>
         </div>
 
         <div class="interpretation-box-clinica">
-          <h3>Atención ambulatoria</h3>
+          <h3>Distribución Dotación Fonoaudiológica Ambulatoria</h3>
           <p>{{ interpretacionAmbulatoriaPediatrica }}</p>
           <p>{{ interpretacionAmbulatoriaAdultos }}</p>
         </div>
 
-        <div class="interpretation-box-no-habil">
-          <h3>Continuidad días no hábiles</h3>
-          <p>{{ continuidadTotal }}</p>
-          <p>{{ continuidadPediatrica }}</p>
-          <p>{{ continuidadAdultos }}</p>
-        </div>
-
         <div class="interpretation-box-clinica">
-          <h3>Sugerencia contractual</h3>
+          <h3>Sugerencia Contractual</h3>
           <p>{{ contractualTotal }}</p>
           <p>{{ contractualPediatrica }}</p>
           <p>{{ contractualAdultos }}</p>
         </div>
+        <br>
 
-        <div class="interpretation-box-no-habil" style="border-left-color: #10b981;">
-          <h3>Cobertura No Hábil</h3>
-          <p>{{ interpretacionNoHabiles }}</p>
+
+        <div class="section-title">Interpretación para los Días No Hábiles</div>
+        <div class="interpretation-box-clinica">
+          <h3>Estimación para la Continuidad de la Atención Hospitalaria</h3>
+          <p>{{ continuidadTotal }}</p>
+          <p>{{ continuidadPediatrica }}</p>
+          <p>{{ continuidadAdultos }}</p>
         </div>
+        <br>
 
+        <div class="section-title">Cobertura los 7 días de la semana</div>
         <div class="interpretation-box-clinica">
           <h3>Cobertura continua 7 días</h3>
           <p>{{ cobertura7DiasTotal }}</p>
           <p>{{ cobertura7DiasPediatrica }}</p>
           <p>{{ cobertura7DiasAdultos }}</p>
         </div>
+        <br>
 
+        <div class="section-title">Consideraciones finales</div>
         <div class="interpretation-box-no-habil">
-          <h3>Texto final obligatorio</h3>
+          <h3>Importante</h3>
           <p>{{ textoFinalObligatorio }}</p>
         </div>
 
-
-
-
-
+        <!--
         <div class="interpretation-box-clinica">
           <h3>Interpretación Clínica</h3>
           <p>{{ interpretacionSemanal }}</p>
         </div>
-        <!--codigo ia aca abajo-->
-      
-
-
-
-
-
-       
+        -->
+               
       </ion-card-content>
     </ion-card>
   </div>
