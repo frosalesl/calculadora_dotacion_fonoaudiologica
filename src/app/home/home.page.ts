@@ -43,7 +43,6 @@ import {
     IonContent,
     IonIcon,
     IonHeader,
-    IonTitle,
     IonImg,
     IonToolbar,
     IonCard,
@@ -59,7 +58,7 @@ import {
     IonCol,
     IonList,
     IonSearchbar
-  ]
+]
 })
 export class HomePage {
 
@@ -446,31 +445,31 @@ filtrarHospitales(event: any) {
 
     if (tipo === 'total') {
       if (nh < 4.5) {
-        return `-General: Se estima un total de ${horas} horas durante días no hábiles. Dado que la carga estimada es inferior a 4,5 horas diarias, se sugiere que cada institución evalúe alternativas de cobertura mediante extensión horaria, horas extraordinarias u otros mecanismos locales según necesidad asistencial.`;
+        return `-General: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios adultos y pediátricos. Dado que la carga estimada es inferior a 4,5 horas diarias, se sugiere que cada institución evalúe alternativas de cobertura mediante extensión horaria, horas extraordinarias u otros mecanismos locales según necesidad asistencial.`;
       }
       if (nh < 8) {
-        return `-General: Se estima un total de ${horas} horas durante días no hábiles. La carga proyectada sugiere la implementación de cobertura profesional organizada durante días no hábiles, considerando programación institucional y continuidad clínica según demanda asistencial.`;
+        return `-General: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios adultos y pediátricos. La carga proyectada sugiere la implementación de cobertura profesional organizada durante días no hábiles, considerando programación institucional y continuidad clínica según demanda asistencial.`;
       }
-      return `-General: Se estima un total de ${horas} horas durante días no hábiles. La carga asistencial proyectada respalda la implementación formal de cobertura clínica permanente durante días no hábiles, considerando organización institucional de turnos y continuidad operativa.`;
+      return `-General: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios adultos y pediátricos. La carga asistencial proyectada respalda la implementación formal de cobertura clínica permanente durante días no hábiles, considerando organización institucional de turnos y continuidad operativa.`;
     }
 
     if (tipo === 'pediatrica') {
       if (nh < 4.5) {
-        return `-Usuarios pediátricos: Se estima un total de ${horas} horas durante días no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar mecanismos flexibles de cobertura pediátrica según necesidad institucional.`;
+        return `-Usuarios pediátricos: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios pediátricos. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar mecanismos flexibles de cobertura pediátrica según necesidad institucional.`;
       }
       if (nh < 8) {
-        return `-Usuarios pediátricos: Se estima un total de ${horas} horas durante días no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios pediátricos.`;
+        return `-Usuarios pediátricos: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios pediátricos. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios pediátricos.`;
       }
-      return `-Usuarios pediátricos: Se estima un total de ${horas} horas durante días no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes pediátricos.`;
+      return `-Usuarios pediátricos: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios pediátricos. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes pediátricos.`;
     }
 
     if (nh < 4.5) {
-      return `-Usuarios adultos: Se estima un total de ${horas} horas durante días no hábiles. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar alternativas de cobertura flexible según requerimientos institucionales.`;
+      return `-Usuarios adultos: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios adultos. Dado que la carga proyectada es inferior a media jornada clínica diaria, se recomienda evaluar alternativas de cobertura flexible según requerimientos institucionales.`;
     }
     if (nh < 8) {
-      return `-Usuarios adultos: Se estima un total de ${horas} horas durante días no hábiles. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios adultos.`;
+      return `-Usuarios adultos: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios adultos. La carga asistencial proyectada sugiere programación organizada de continuidad clínica de usuarios adultos.`;
     }
-    return `-Usuarios adultos: Se estima un total de ${horas} horas durante días no hábiles. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes adultos.`;
+    return `-Usuarios adultos: Se estima un total de ${horas} horas por cada día no hábil para la atención de usuarios adultos. La carga proyectada respalda la implementación formal de cobertura profesional permanente para pacientes adultos.`;
   }
 
   private generarTextoContractual(horas: number): { t44: string; t22: string; tComp: string } {
