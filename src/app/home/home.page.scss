@@ -5,18 +5,51 @@ ion-content {
 
 /* Header Profesional */
 ion-toolbar {
-  --background: #ffffff; //--background: #35B2BE; color original 
+  --background: #ffffff;
   --color: rgb(22, 22, 22);
   --padding-top: 8px;
   --padding-bottom: 8px;
-  padding-left: 16px;
+  --padding-left: 16px;
+ --min-height: 80px; // Permite que crezca según el texto
+  align-items: flex-start; // Alinea el logo y el texto arriba
 }
 
-/* Texto del título */
-ion-title {
-  font-size: 25px;
-  font-weight: bold;
-  color: rgb(22, 22, 22);
+.intro-container {
+  padding: 1.5rem 20px; // El 16px es la clave para alinearse a la izquierda
+}
+
+/* Contenedor del Título */
+.header-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1; // Ocupa el espacio restante
+  max-width: 90%; // Evita que toque el borde derecho (puedes usar 85% si quieres más aire)
+  margin-right: 2%; // Un margen fijo para asegurar separación
+  
+  .main-title {
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
+    line-height: 1.1;
+    font-weight: bold;
+    color: #000;
+    margin: 0;
+    // Esto asegura que el texto se rompa en líneas
+    word-wrap: break-word;
+    white-space: normal; 
+    text-align: justify; 
+
+  }
+
+  .subtitle {
+    color: #666;
+    margin: 4px 0 0 0;
+    white-space: normal;
+  }
+}
+
+/* Ajuste del Logo */
+.logo {
+  margin: 10px;
 }
 
 /* Contenedores Principales */
@@ -25,7 +58,10 @@ ion-title {
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   margin: 16px;
   border: 1px solid #d4e0ef;
-  background: #BFEDEF;
+  background: #bfefe9;
+  width: calc(100% - 32px); // Asegura que no se desborde y mida igual que el contenedor de arriba
+  margin: 16px 16px;        // Fuerza un margen fijo de 16px a cada lado
+  overflow: visible;
 }
 
 .section-title {
@@ -41,10 +77,12 @@ ion-title {
 /* ============================================================================
    Buscador y Resultados Filtrados (Solución al tamaño y diseño gigante)
 ============================================================================ */
+
+
 .search-results {
   max-height: 220px;
   overflow-y: auto;
-  border: 1px solid #79bbc3;
+  border: 1px solid #000000;
   border-radius: 8px;
   margin: -8px 0 12px 0; // Se acopla perfectamente bajo el buscador
   z-index: 999;
@@ -74,12 +112,17 @@ ion-title {
     border-bottom: none !important;
   }
 }
-
+  ion-searchbar {
+  --background: #ffffff;
+  --box-shadow: none;
+    padding: 0 !important;
+    margin: 0 !important;
+}
 /* Agrupación Adulto/Pediatría */
 .group-pediatria,
 .group-informacion,
 .group-adulto {
-  background: #b0c0c9;
+  background: #7ea2a7;
   border-radius: 10px;
   padding: 8px;
   color: black;
@@ -126,7 +169,7 @@ ion-title {
 
 /* Inputs mejorados (Se mantienen intactos para tus casillas numéricas) */
 ion-item {
-  --background: #def9f6;
+  --background: #ffffff;
   --border-color: #899694;
   --padding-start: 12px;
   margin-bottom: 8px;
@@ -151,7 +194,7 @@ ion-label {
   border-radius: 8px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
-  background: white;
+
 
   th:nth-child(1),
   td:nth-child(1) {
@@ -175,7 +218,7 @@ ion-label {
   }
 
   thead {
-    background: #475569;
+    background: #1e293b;
     color: white;
 
     th {
@@ -192,7 +235,7 @@ ion-label {
 
   tbody {
     tr:nth-child(odd) {
-      background: #bfe7eb;
+      background: #dbdbdb;
     }
 
     tr:nth-child(even) {
@@ -226,7 +269,7 @@ ion-label {
 
 /* Fila total */
 .total-general {
-  background-color: #475569 !important;
+  background-color: #1e293b !important;
   color: white;
 
   td {
@@ -306,12 +349,12 @@ ion-label {
 
 /* Botones */
 .btn-calculate {
-  --background: #66e5db;
+  --background: #062638;
   --border-radius: 8px;
   font-weight: 600;
   height: 50px;
   margin: 16px;
-  color: #1e293b;
+  color: #ffffff;
 }
 
 .boton-rojo {
@@ -320,7 +363,7 @@ ion-label {
   margin: 16px;
 }
 
-/* Responsive */
+/* Responsive original con las tablas e inputs intactos */
 @media (max-width: 768px) {
   ion-toolbar {
     padding-left: 16px;
@@ -348,3 +391,109 @@ ion-label {
     }
   }
 }
+
+/* ============================================================================
+   MODIFICACIÓN DEL DASHBOARD PRINCIPAL (Con bordes y tipografía optimizada)
+============================================================================ */
+.dashboard-card {
+  background: #c7dcdd; /* Color de fondo exacto de la interpretación */
+  border: 1px solid #79bbc3; /* Mismo color de borde */
+  padding: 16px;
+  margin: 16px;
+  border-radius: 8px;
+}
+
+.main-title {
+  margin: 0 0 12px 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #0a0a0a;
+}
+
+/* Subtítulos de sección con la tipografía limpia */
+.dashboard-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 12px 4px;
+}
+
+/* Grid adaptable: Uno al lado del otro en pantallas grandes, uno abajo del otro en móviles */
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+/* Sub-bloques interiores blancos CON el borde izquierdo oscuro que te gustó */
+.mini-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #475569 !important; /* Detalle lateral gris pizarra */
+  padding: 14px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Alinea todo hacia arriba */
+  gap: 10px;                   /* Mantiene un espacio constante y ordenado entre elementos */
+}
+
+/* Encabezado con Nombre y Badge Azul con la tipografía corregida */
+.metrics-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  h3, .area-label {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700; /* Letra más marcada */
+    color: #1e293b;   /* Tono oscuro e institucional */
+  }
+}
+
+/* Píldora/Badge Azul para Porcentajes */
+.badge-percentage {
+  background-color: #0052cc; /* El azul fuerte de tu imagen */
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+/* Texto de las propuestas y distribución con tipografía estilizada */
+.cargo-text {
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #334155;
+  
+  strong {
+    font-size: 1.05rem;
+    color: #1e293b;
+    font-weight: 700;
+  }
+}
+
+/* Footer con Horas y JCE */
+.metrics-footer {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  margin-top: 8px;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* Barra de Progreso Ionizada */
+ion-progress-bar {
+  height: 8px;
+  border-radius: 4px;
+  --color: #0052cc !important;        /* Azul vibrante del progreso */
+  --background: #cbd5e1 !important;   /* Fondo gris/azul claro opaco */
+}
+
