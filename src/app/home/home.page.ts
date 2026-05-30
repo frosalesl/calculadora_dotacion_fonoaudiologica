@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
 import { 
   businessOutline, statsChartOutline, statsChart, trashOutline, trash, 
   bedOutline, personOutline, thermometerSharp, bagHandleSharp, bandageSharp, 
   personRemoveOutline, personRemoveSharp, personAddSharp, medicalOutline, 
   medicalSharp, bagAddSharp, warningOutline, briefcaseOutline, timeOutline, 
-  addCircleOutline, analyticsOutline, ribbonOutline, calendarOutline 
-} from 'ionicons/icons';
+  addCircleOutline, analyticsOutline, ribbonOutline, calendarOutline, documentTextOutline, star, documentOutline, alarmOutline, refreshOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 import {
@@ -57,23 +58,40 @@ import {
     IonRow,
     IonCol,
     IonList,
-    IonSearchbar
+    IonSearchbar,
+    NgApexchartsModule
 ]
 })
 export class HomePage {
 
   protected Math = Math;
 
-  constructor() {
-    addIcons({
-      businessOutline, statsChartOutline, trashOutline, medicalOutline, 
-      briefcaseOutline, timeOutline, addCircleOutline, analyticsOutline, 
-      ribbonOutline, statsChart, calendarOutline, warningOutline, 
-      medicalSharp, trash, bedOutline, personOutline, thermometerSharp, 
-      bagHandleSharp, bandageSharp, personRemoveOutline, personRemoveSharp, 
-      personAddSharp, bagAddSharp
-    });
+  // --- Getters para gráficos ---
+  get hospitalPediatricoHs(): number {
+    return (this.tabla.basicasPed?.hs || 0)
+        + (this.tabla.mediasPed?.hs || 0)
+        + (this.tabla.criticasPed?.hs || 0);
   }
+
+  get hospitalAdultoHs(): number {
+    return (this.tabla.basicas30?.hs || 0)
+        + (this.tabla.basicas70?.hs || 0)
+        + (this.tabla.mediasAdultos?.hs || 0)
+        + (this.tabla.criticasAdultos?.hs || 0);
+  }
+
+  get ambulatorioPediatricoHs(): number {
+    return this.tabla.ambulatorioPediatrico?.hs || 0;
+  }
+
+  get ambulatorioAdultoHs(): number {
+    return this.tabla.ambulatorioAdulto?.hs || 0;
+  }
+
+  constructor(private cdr: ChangeDetectorRef) {
+    addIcons({businessOutline,statsChartOutline,documentOutline,trashOutline,alarmOutline,analyticsOutline,calendarOutline,refreshOutline,star,documentTextOutline,medicalOutline,briefcaseOutline,timeOutline,addCircleOutline,ribbonOutline,statsChart,warningOutline,medicalSharp,trash,bedOutline,personOutline,thermometerSharp,bagHandleSharp,bandageSharp,personRemoveOutline,personRemoveSharp,personAddSharp,bagAddSharp});
+  }
+
 
   //---------------------------------------------------
   // HOSPITAL
@@ -314,6 +332,7 @@ export class HomePage {
       ambulatorioPediatrico: { hs: 0, porcentaje: 0 }
     }
   };
+  
 
   interpretacionSemanal = '';
   interpretacionClinica = '';
@@ -519,6 +538,40 @@ filtrarHospitales(event: any) {
     };
   }
 
+  // --- FUNCIÓN FÁBRICA PARA GRÁFICOS ---
+  public getChartConfig(type: 'donut' | 'bar', series: number[], labels: string[]) {
+    const isDonut = type === 'donut';
+    
+    return {
+      chart: {
+        type: type,
+        height: isDonut ? 220 : 250,
+        animations: { enabled: true, easing: 'easeinout', speed: 800 }
+      },
+      series: series,
+      labels: labels,
+      // Usando tu paleta: Turquesa, Gris Borde, Azul Oscuro
+      colors: ['#00aeb3', '#cbd5e1', '#062638'], 
+      plotOptions: {
+        pie: isDonut ? { 
+          donut: { 
+            size: '65%',
+            labels: { show: true } 
+          } 
+        } : {},
+        bar: !isDonut ? { 
+          columnWidth: '50%', 
+          borderRadius: 4,
+          distributed: true // Esto hace que cada barra use un color diferente si tienes varios labels
+        } : {}
+      },
+      legend: { 
+        position: 'bottom',
+        labels: { colors: '#334155' } // Usando tu $gris-texto
+      }
+    };
+  }
+
   //---------------------------------------------------
   // CÁLCULO PRINCIPAL
   //---------------------------------------------------
@@ -595,6 +648,16 @@ filtrarHospitales(event: any) {
     const jceRemanente = remanenteHospitalario / 44;
     this.jce = jceHospitalario > jceRemanente ? jceHospitalario : jceRemanente;
 
+    // 1. Horas Pediátricas Totales (Hospitalario + Ambulatorio)
+    const totalPediatricoHs = bp + mp + cp + HP;
+    const pedClinicas = ( (bp + mp + cp) * 0.77 ) + (HP * 0.84);
+    const pedNoClinicas = ( (bp + mp + cp) * 0.23 ) + (HP * 0.16);
+
+    // 2. Horas Adultas Totales (Hospitalario + Ambulatorio)
+    const totalAdultoHs = ba30 + ba70 + ma + ca + HA;
+    const aduClinicas = ( (ba30 + ba70 + ma + ca) * 0.77 ) + (HA * 0.84);
+    const aduNoClinicas = ( (ba30 + ba70 + ma + ca) * 0.23 ) + (HA * 0.16);
+
     // Asignación estructurada y robusta del objeto tabla
     this.tabla = {
       basicas30: { dh: ba30 / 5, hs: ba30, nh: ba30 / 5 },
@@ -627,17 +690,30 @@ filtrarHospitales(event: any) {
           porcentaje: totalSemanalAjustado === 0 ? 0 : (HP / totalSemanalAjustado) * 100
         }
       },
+      
       total: {
         dh: totalSemanalAjustado / 5,
         hs: totalSemanalAjustado,
         nh: totalHospitalarioAjustado / 5
       },
       
-      // Objeto mapeado dinámicamente con las horas de hospitalizado + ambulatorio por sección
       contratos: {
         total: this.calcularSegmentosContrato(totalSemanalAjustado),
         pediatria: this.calcularSegmentosContrato(totalPediatricos + HP),
         adultos: this.calcularSegmentosContrato(totalAdultos + HA)
+      },
+
+      distribucion: {
+        pediatrica: {
+          totalHs: totalPediatricoHs,
+          clinicas: pedClinicas,
+          noClinicas: pedNoClinicas
+        },
+        adultos: {
+          totalHs: totalAdultoHs,
+          clinicas: aduClinicas,
+          noClinicas: aduNoClinicas
+        }
       }
     };
 
@@ -689,10 +765,14 @@ filtrarHospitales(event: any) {
     this.cobertura7DiasPediatrica = `-Cobertura atención usuarios pediátricos: La cobertura fonoaudiológica de usuarios pediátricos estimada para continuidad asistencial de siete días corresponde a ${total7DiasPediatrico.toFixed(2)} horas semanales.`;
     this.cobertura7DiasAdultos = `-Cobertura atención usuarios adultos: La cobertura fonoaudiológica de usuarios adultos estimada para continuidad asistencial de siete días corresponde a ${total7DiasAdultos.toFixed(2)} horas semanales.`;
     
-    this.textoFinalObligatorio = `Los resultados entregados corresponden a una estimación referencial de dotación fonoaudiológica basada en capacidad instalada hospitalaria y continuidad asistencial. Se sugiere revisar las orientaciones técnicas ministeriales para dar alcanzar el rendimiento establecido de dos a tres atenciones por hora. Se recomienda que cada establecimiento supervise el correcto desempeño de los profesionales dentro de las horas asignadas para actividades clínicas, con el objetivo de garantizar la continuidad, oportunidad y cobertura efectiva de atención de usuarios adultos y pediátricos.`;
+    this.textoFinalObligatorio = `Los resultados entregados corresponden a una estimación referencial de dotación fonoaudiológica basada en capacidad instalada hospitalaria y continuidad asistencial. Se sugiere revisar las orientaciones técnicas ministeriales para lograr el rendimiento establecido de dos a tres atenciones por hora. Se recomienda que cada establecimiento supervise el correcto desempeño de los profesionales dentro de las horas asignadas para actividades clínicas, con el objetivo de garantizar la continuidad, oportunidad y cobertura efectiva de atención de usuarios adultos y pediátricos.`;
 
     this.mostrarResultados = true;
+
+    this.cdr.detectChanges();
+
   }
+  
 
   //---------------------------------------------------
   // RESET CLEAN
