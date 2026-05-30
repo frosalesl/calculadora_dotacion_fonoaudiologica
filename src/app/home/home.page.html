@@ -4,17 +4,17 @@
 
     <div class="header-text-container">
       <h1 class="main-title">Estimador de Dotación Fonoaudiológica en Hospitales Públicos en Chile</h1>
-      <h3 class="subtitle">Una Herramienta Piloto para la Garantizar Continuidad Asistencial</h3>
-      <h6 class="subtitle">-Basado en fórmula del Modelo de Gestión de Red de Rehabilitación del Ministerio de Salud-</h6>
+      <h3 class="subtitle">Una Herramienta Piloto para Garantizar la Gestión de la Productividad y de la Continuidad Asistencial</h3>
+      <h6 class="subtitle">-Basado en documentos del Ministerio de Salud y sugerencias del Royal College of Speech and Language Therapists-</h6>
     </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="intro-container ion-padding">
-    <h3 style="font-size: 1.1rem; margin-bottom: 20px;">¡Bienvenida/o!</h3>
-    <p style="color: var(--ion-color-medium); font-size: 1rem; text-align: justify">
-    El propósito de esta herramienta es facilitar la estimación de la dotación fonoaudiológica en hospitales públicos de Chile. A través de una interfaz intuitiva, podrá ingresar los datos de su establecimiento y obtener un informe detallado con la distribución de horas diarias y semanales, la estimación contractual y sugerencias de cobertura para días no hábiles. Lo anterior, con el objetivo de garantizar la continuidad de la atención de usuarios adultos y pediátricos.</p>
+    <h2 style="font-size: 1.3rem; margin-bottom: 20px;">¡Bienvenida/o!</h2>
+    <p style="color: black; font-size: 1rem; text-align: justify">
+    El propósito de esta herramienta es facilitar la estimación de la dotación fonoaudiológica en hospitales públicos de Chile. A través de una interfaz intuitiva, podrá ingresar los datos de su establecimiento y obtener un informe detallado con la distribución de horas diarias y semanales, la estimación contractual y sugerencias de cobertura para días no hábiles. Lo anterior, con el objetivo de garantizar la gestión de la productividad y de la continuidad de la atención de usuarios adultos y pediátricos.</p>
   </div>
 
   <ion-card class="section-card">
@@ -149,22 +149,31 @@
           </ion-col>
         </ion-row>
       </ion-grid>
-
-      <ion-button expand="block" class="btn-calculate" (click)="calcular()" [disabled]="!validar()">
-        GENERAR INFORME DE DOTACIÓN
-      </ion-button>
-      
-      <ion-button class="boton-rojo" expand="block"    (click)="resetear()">
-          <ion-icon slot="start" name="trash-outline"></ion-icon>
-        Limpiar datos
-      </ion-button>
+      <div class="center-wrapper">
+        <ion-card class="action-card">
+          <ion-card-content>
+            <div class="button-group">
+              <ion-button class="btn-calculate" (click)="calcular()" [disabled]="!validar()">
+                <ion-icon slot="start" name="document-outline"></ion-icon>
+                GENERAR INFORME
+              </ion-button>
+              
+              <ion-button class="boton-rojo" (click)="resetear()">
+                <ion-icon slot="start" name="trash-outline"></ion-icon>
+                LIMPIAR DATOS
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
     </ion-card-content>
   </ion-card>
 
 <div *ngIf="mostrarResultados" class="ion-padding-bottom">
   <ion-card class="section-card">
     <ion-card-content>
-      <div class="section-title">Detalle de Distribución de Horas Diarias, Semanales y Sugerencia para Días No Hábiles para el {{hospital}}</div>
+      <div class="section-title">
+        <ion-icon name="alarm-outline"></ion-icon>Detalle de Distribución de Horas Diarias, Semanales y Sugerencia para Días No Hábiles para el {{hospital}}</div>
         <div>
           <p style="color: black; font-size: 1rem; text-align: justify;">
             • A continuación, se detalla la distribución de horas diarias y semanales, así como la propuesta de cobertura para los días no hábiles.
@@ -252,64 +261,96 @@
           </tr>
         </tbody>
       </table> <!-- Cierre correcto de la tabla -->
-          <div>
-            <p>*Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.</p>
-          </div>
-      
+        <p style="color: rgb(0, 0, 0); font-size: 1rem; text-align: justify;">
+          *Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.
+        </p>
       <br>
+      <!--
       <div class="summary-highlight">
-        <span>Jornada Completa Equivalente (JCE) Semanal</span>
+        <span style="font-weight: bold;"> Jornada Completa Equivalente (JCE) Semanal</span>
         <br>
         <span>{{hospital}}</span>
         <h2>{{ jce | number:'1.2-2' }}</h2>
         <p>Cálculo basado en las {{ tabla.total.hs | number:'1.2-2' }} horas semanales totales, de acuerdo al total de camas ingresadas, equivalentes a {{ tabla.total.dh | number:'1.2-2' }} horas diarias totales</p>
         <p>*Una JCE corresponds a una jornada laboral de 44 horas semanales</p>
-      </div>
+      </div>-->
+
+      <ion-card class="dashboard-card compact-card">
+        <ion-card-header>
+          <ion-card-title class="main-title">
+            <strong>Jornada Completa Equivalente (JCE) Semanal</strong>
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="summary-highlight">
+            <span>🏥{{hospital}}🏥</span>
+            <h2>{{ jce | number:'1.2-2' }}</h2>
+            <p style="font-size: 1rem; margin-top: 10px;">
+              (1 JCE = 44 horas)
+            </p>
+            <p style="font-size: 1rem; margin-top: 10px;">
+              Cálculo de acuerdo con las {{ tabla.total.hs | number:'1.2-2' }} horas semanales totales, según el total de camas ingresadas, equivalentes a {{ tabla.total.dh | number:'1.2-2' }} horas diarias totales.
+            </p>
+            <p style="font-size: 1rem; margin-top: 10px;">
+              *Basado en el Modelo de Gestión de Red de Rehabilitación del Ministerio de Salud.
+            </p>
+          </div>
+        </ion-card-content>
+      </ion-card>
       
       <br>
+
+    <!-- SECCIÓN 1: Interpretación para los Días No Hábiles -->
       <div class="section-title">Interpretación General Semana Regular</div>
       <div>
-        <p style="color: black; font-size: 1rem; text-align: justify;">
-          En esta sección podrá conocer la distribución semanal vigente requerida para el {{hospital}}, como también, la sugerencia contractual de acuerdo al concepto de JCE y horas totales.
+        <p style="color: rgb(0, 0, 0); font-size: 1rem; text-align: justify;">
+          En esta sección podrá conocer la distribución semanal vigente requerida para el {{hospital}}, como también la sugerencia contractual de acuerdo al concepto de JCE y horas totales.
         </p>
       </div>
 
-      <!-- DASHBOARD 1: Distribución Hospitalaria y Ambulatoria -->
+      <!-- DASHBOARD 1: Distribución Dotación Fonoaudiológica Hospitalaria y Ambulatoria -->
       <ion-card class="dashboard-card compact-card">
         <ion-card-header class="dashboard-header">
           <ion-card-title class="main-title">
             Distribución Dotación Fonoaudiológica Hospitalaria y Ambulatoria
           </ion-card-title>
+          <br>
+          <div class="grid-dashboard" *ngIf="continuidadTotal" style="grid-template-columns: 1fr; margin-bottom: 12px;">
+            <ion-card class="mini-card" style="border-left: 8px solid #00aeb3; background: #f8fafc; margin: 0;">
+              <div class="metrics-header">
+                <span class="area-label" style="color: #334155;">🏛️ Estimación Institucional Global</span>
+              </div>
+              <div style="margin-top: 10px; display: flex; gap: 12px; align-items: flex-start;">
                 <div>
-                  <p style="color: black; font-size: 1rem; text-align: justify;">
-                    De acuerdo con los resultados, en el {{hospital}} la estimación de dotación fonoaudiológica para:
+                  <p style="color: rgb(0, 0, 0); font-size: 1rem; text-align: justify;">
+                    De acuerdo con los resultados, la estimación de dotación fonoaudiológica para:
                   </p>
-                </div>
-                <div>
-                  <p style="color: black; font-size: 1rem; text-align: justify;">
+                  <p style="color: rgb(0, 0, 0); font-size: 1rem; text-align: justify;">
                     • Usuarios pediátricos corresponde a {{ (tabla.resumen.hospitalizadoPediatricos.hs + tabla.resumen.ambulatorioPediatrico.hs) | number:'1.2-2' }} horas semanales equivalentes a {{ ((tabla.resumen.hospitalizadoPediatricos.hs + tabla.resumen.ambulatorioPediatrico.hs) / 44).toFixed(2) }} JCE.
                   </p>
-                </div>
-                <div>
-                  <p style="color: black; font-size: 1rem; text-align: justify;">
+                  <p style="color: rgb(0, 0, 0); font-size: 1rem; text-align: justify;">
                     • Usuarios adultos corresponde a {{ (tabla.resumen.hospitalizadoAdultos.hs + tabla.resumen.ambulatorioAdulto.hs) | number:'1.2-2' }} horas semanales equivalentes a {{ ((tabla.resumen.hospitalizadoAdultos.hs + tabla.resumen.ambulatorioAdulto.hs) / 44).toFixed(2) }} JCE. 
                   </p>
                 </div>
-        </ion-card-header>
+              </div>
+            </ion-card>
+          </div>
 
+        </ion-card-header>
+        <br>
         <ion-card-content class="ion-no-padding">
           <h2 class="dashboard-subtitle">🏥 Ámbito Hospitalario</h2>
           <div class="grid-dashboard">
             <ion-card class="mini-card pediatria">
               <div class="metrics-header">
-                <span class="area-label">🧒 Hospitalario Pediátrico</span>
+                <span class="area-label">👶🏻 Hospitalario Pediátrico</span>
               </div>
               <div>
                 <ion-badge class="badge-percentage">
                   {{ (( (tabla.basicasPed.hs || 0) + (tabla.mediasPed.hs || 0) + (tabla.criticasPed.hs || 0) ) / (tabla.total.hs || 1)) * 100 | number:'1.2-2' }}% de la carga
                 </ion-badge>
               </div>
-              <ion-progress-bar class="progress-pediatria" [value]="( (tabla.basicasPed.hs || 0) + (tabla.mediasPed.hs || 0) + (tabla.criticasPed.hs || 0) ) / (tabla.total.hs || 1)"></ion-progress-bar>
+              <ion-progress-bar class="progress" [value]="( (tabla.basicasPed.hs || 0) + (tabla.mediasPed.hs || 0) + (tabla.criticasPed.hs || 0) ) / (tabla.total.hs || 1)"></ion-progress-bar>
               <div class="metrics-footer">
                 <span><strong>Horas Semanales:</strong> {{ ( (tabla.basicasPed.hs || 0) + (tabla.mediasPed.hs || 0) + (tabla.criticasPed.hs || 0) ) | number:'1.2-2' }}</span>
                 <span class="font-jce"><strong>JCE:</strong> {{ ( ( (tabla.basicasPed.hs || 0) + (tabla.mediasPed.hs || 0) + (tabla.criticasPed.hs || 0) ) / 44) | number:'1.2-2' }}</span>
@@ -318,14 +359,14 @@
 
             <ion-card class="mini-card adultos">
               <div class="metrics-header">
-                <span class="area-label">👨‍💼 Hospitalario Adulto</span>
+                <span class="area-label">🧑🏻 Hospitalario Adulto</span>
               </div>
               <div>
                 <ion-badge class="badge-percentage">
                   {{ (( (tabla.basicas30.hs || 0) + (tabla.basicas70.hs || 0) + (tabla.mediasAdultos.hs || 0) + (tabla.criticasAdultos.hs || 0) ) / (tabla.total.hs || 1)) * 100 | number:'1.2-2' }}% de la carga
                 </ion-badge>
               </div>
-              <ion-progress-bar class="progress-adultos" [value]="( (tabla.basicas30.hs || 0) + (tabla.basicas70.hs || 0) + (tabla.mediasAdultos.hs || 0) + (tabla.criticasAdultos.hs || 0) ) / (tabla.total.hs || 1)"></ion-progress-bar>
+              <ion-progress-bar class="progress" [value]="( (tabla.basicas30.hs || 0) + (tabla.basicas70.hs || 0) + (tabla.mediasAdultos.hs || 0) + (tabla.criticasAdultos.hs || 0) ) / (tabla.total.hs || 1)"></ion-progress-bar>
               <div class="metrics-footer">
                 <span><strong>Horas Semanales:</strong> {{ ( (tabla.basicas30.hs || 0) + (tabla.basicas70.hs || 0) + (tabla.mediasAdultos.hs || 0) + (tabla.criticasAdultos.hs || 0) ) | number:'1.2-2' }}</span>
                 <span class="font-jce"><strong>JCE:</strong> {{ ( ( (tabla.basicas30.hs || 0) + (tabla.basicas70.hs || 0) + (tabla.mediasAdultos.hs || 0) + (tabla.criticasAdultos.hs || 0) ) / 44) | number:'1.2-2' }}</span>
@@ -334,18 +375,19 @@
           </div>
           
           <br>
+          <br>
           <h2 class="dashboard-subtitle">🚶 Ámbito Ambulatorio</h2>
           <div class="grid-dashboard">
             <ion-card class="mini-card pediatria">
               <div class="metrics-header">
-                <span class="area-label">🧒 Ambulatorio Pediátrico</span>
+                <span class="area-label">👶🏻 Ambulatorio Pediátrico</span>
               </div>
               <div>
                 <ion-badge class="badge-percentage">
                   {{ ((tabla.ambulatorioPediatrico.hs || 0) / (tabla.total.hs || 1)) * 100 | number:'1.2-2' }}% de la carga
                 </ion-badge>
               </div>
-              <ion-progress-bar class="progress-pediatria" [value]="(tabla.ambulatorioPediatrico.hs || 0) / (tabla.total.hs || 1)"></ion-progress-bar>
+              <ion-progress-bar class="progress" [value]="(tabla.ambulatorioPediatrico.hs || 0) / (tabla.total.hs || 1)"></ion-progress-bar>
               <div class="metrics-footer">
                 <span><strong>Horas Semanales:</strong> {{ (tabla.ambulatorioPediatrico.hs || 0) | number:'1.2-2' }}</span>
                 <span class="font-jce"><strong>JCE:</strong> {{ ((tabla.ambulatorioPediatrico.hs || 0) / 44) | number:'1.2-2' }}</span>
@@ -354,34 +396,208 @@
 
             <ion-card class="mini-card adultos">
               <div class="metrics-header">
-                <span class="area-label">👨‍💼 Ambulatorio Adulto</span>
+                <span class="area-label">🧑🏻 Ambulatorio Adulto</span>
               </div>
               <div>
                 <ion-badge class="badge-percentage">
                   {{ ((tabla.ambulatorioAdulto.hs || 0) / (tabla.total.hs || 1)) * 100 | number:'1.2-2' }}% de la carga
                 </ion-badge>
               </div>
-              <ion-progress-bar class="progress-adultos" [value]="(tabla.ambulatorioAdulto.hs || 0) / (tabla.total.hs || 1)"></ion-progress-bar>
+              <ion-progress-bar class="progress" [value]="(tabla.ambulatorioAdulto.hs || 0) / (tabla.total.hs || 1)"></ion-progress-bar>
               <div class="metrics-footer">
                 <span><strong>Horas Semanales:</strong> {{ (tabla.ambulatorioAdulto.hs || 0) | number:'1.2-2' }}</span>
                 <span class="font-jce"><strong>JCE:</strong> {{ ((tabla.ambulatorioAdulto.hs || 0) / 44) | number:'1.2-2' }}</span>
               </div>
             </ion-card>
           </div>
+          <br>
+            <p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+              *Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.
+            </p>
         </ion-card-content>
-          <div>
-            <p>*Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.</p>
-          </div>
       </ion-card>
+      <br>
 
-      <!-- DASHBOARD 2: Sugerencia Contractual -->
+      <!-- DASHBOARD 2: Distribución Dotación Asistencial para Actividades Clínicas y Administrativas -->
+      <ion-card class="dashboard-card compact-card" *ngIf="tabla.distribucion">
+        <ion-card-header class="dashboard-header">
+          <ion-card-title class="main-title">Distribución Dotación Asistencial para Actividades Clínicas y Administrativas</ion-card-title>
+          <ion-card-subtitle class="custom-subtitle">*Basado en las "Orientaciones para la Planificación y Programación en Red" del Ministerio de Salud.</ion-card-subtitle>
+        </ion-card-header>
+          <br>
+          <br>
+          <div>
+            <p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+              La siguiente sección presenta una estimación detallada de la distribución de horas para actividades clínicas y administrativas, según orientaciones ministeriales.
+            </p>
+          </div>
+          <br>
+
+        <ion-card-content class="ion-no-padding">
+          <!-- 1. GLOBAL -->
+          <h2 class="dashboard-subtitle">🏛️ Estimación Institucional Global</h2>
+          <div class="grid-dashboard">
+            <ion-card class="mini-card pediatria">
+              <div class="metrics-header"><span class="area-label">👶🏻 Total Pediátrico</span></div>
+              <ion-progress-bar class="progress" [value]="tabla.distribucion.pediatrica.clinicas / (tabla.distribucion.pediatrica.totalHs || 1)"></ion-progress-bar>
+              <div class="metrics-footer">
+                <span><strong>Actividades Clínicas:</strong> {{ tabla.distribucion.pediatrica.clinicas | number:'1.2-2' }} horas</span>
+                <span><strong>Actividades Administrativas:</strong> {{ tabla.distribucion.pediatrica.noClinicas | number:'1.2-2' }} horas </span>
+              </div>
+            </ion-card>
+            <ion-card class="mini-card adultos">
+              <div class="metrics-header"><span class="area-label">🧑🏻 Total Adulto</span></div>
+              <ion-progress-bar class="progress" [value]="tabla.distribucion.adultos.clinicas / (tabla.distribucion.adultos.totalHs || 1)"></ion-progress-bar>
+              <div class="metrics-footer">
+                <span><strong>Actividades Clínicas:</strong> {{ tabla.distribucion.adultos.clinicas | number:'1.2-2' }} horas</span>
+                <span><strong>Actividades Administrativas:</strong> {{ tabla.distribucion.adultos.noClinicas | number:'1.2-2' }} horas</span>
+              </div>
+            </ion-card>
+          </div>
+          <br>
+          <br>
+
+          <!-- 2. HOSPITALIZADO (77% / 23%) -->
+          <h2 class="dashboard-subtitle">🏥 Ámbito Hospitalizado (77% Clínicas / 23% Administrativas)</h2>
+          <div class="grid-dashboard">
+            <ion-card class="mini-card pediatria">
+              <div class="metrics-header"><span class="area-label">👶🏻 Hospitalario Pediátrico</span></div>
+              <ion-progress-bar class="progress" [value]="0.77"></ion-progress-bar>
+              <div class="metrics-footer">
+                <span><strong>Actividades Clínicas:</strong> {{ (tabla.resumen.hospitalizadoPediatricos.hs * 0.77) | number:'1.2-2' }} horas</span>
+                <span><strong>Actividades Administrativas:</strong> {{ (tabla.resumen.hospitalizadoPediatricos.hs * 0.23) | number:'1.2-2' }} horas</span>
+              </div>
+            </ion-card>
+            <ion-card class="mini-card adultos">
+              <div class="metrics-header"><span class="area-label">🧑🏻 Hospitalario Adulto</span></div>
+              <ion-progress-bar class="progress" [value]="0.77"></ion-progress-bar>
+              <div class="metrics-footer">
+                <span><strong>Actividades Clínicas:</strong> {{ (tabla.resumen.hospitalizadoAdultos.hs * 0.77) | number:'1.2-2' }} horas</span>
+                <span><strong>Actividades Administrativas:</strong> {{ (tabla.resumen.hospitalizadoAdultos.hs * 0.23) | number:'1.2-2' }} horas</span>
+              </div>
+            </ion-card>
+          </div>
+          <br>
+          <br>
+
+          <!-- 3. AMBULATORIO (84% / 16%) -->
+          <h2 class="dashboard-subtitle">🚶 Ámbito Ambulatorio (84% Clínicas / 16% Administrativas)</h2>
+          <div class="grid-dashboard">
+            <ion-card class="mini-card pediatria">
+              <div class="metrics-header"><span class="area-label">👶🏻 Ambulatorio Pediátrico</span></div>
+              <ion-progress-bar class="progress" [value]="0.84"></ion-progress-bar>
+              <div class="metrics-footer">
+                <span><strong>Actividades Clínicas:</strong> {{ (tabla.resumen.ambulatorioPediatrico.hs * 0.84) | number:'1.2-2' }} horas</span>
+                <span><strong>Actividades Administrativas:</strong> {{ (tabla.resumen.ambulatorioPediatrico.hs * 0.16) | number:'1.2-2' }} horas</span>
+              </div>
+            </ion-card>
+            <ion-card class="mini-card adultos">
+              <div class="metrics-header"><span class="area-label">🧑🏻 Ambulatorio Adulto</span></div>
+              <ion-progress-bar class="progress" [value]="0.84"></ion-progress-bar>
+              <div class="metrics-footer">
+                <span><strong>Actividades Clínicas:</strong> {{ (tabla.resumen.ambulatorioAdulto.hs * 0.84) | number:'1.2-2' }} horas</span>
+                <span><strong>Actividades Administrativas:</strong> {{ (tabla.resumen.ambulatorioAdulto.hs * 0.16) | number:'1.2-2' }} horas</span>
+              </div>
+            </ion-card>
+          </div>
+          <br>
+            <p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+              *Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.
+            </p>
+        </ion-card-content>
+      </ion-card>
+      <br>
+
+      <!-- DASHBOARD 3: Estimación de la Productividad -->
+      <ion-card class="dashboard-card compact-card" *ngIf="tabla.distribucion">
+        <ion-card-header class="dashboard-header">
+          <ion-card-title class="main-title">Estimación Semanal de la Productividad en Atenciones Clínicas</ion-card-title>
+          <ion-card-subtitle class="custom-subtitle">
+            *Basado en las "Orientaciones para la Planificación y Programación en Red" del Ministerio de Salud.
+          </ion-card-subtitle>
+        </ion-card-header>
+        <br>
+        <ion-card-content class="ion-no-padding" style="padding: 10px;">
+          <h2 class="dashboard-subtitle" style="margin-left: 10px; color: #ffffff;">🏥 Ámbito Hospitalizado (77% Actividades Clínicas)</h2>
+          <div class="grid-dashboard" style="margin-bottom: 15px;">
+            <ion-card class="mini-card pediatria" style="margin: 0;">
+              <div class="metrics-header"><span class="area-label">👶🏻 Hospitalario Pediátrico</span></div>
+              <div style="display: flex; gap: 8px; padding: 10px;">
+                <div style="flex: 1; background: #e0f2fe; border-radius: 8px; padding: 8px; border-left: 3px solid #0284c7; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #0369a1;">Rendimiento Dos Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #0c4a6e;">{{ tabla.resumen.hospitalizadoPediatricos.hs * 0.77 * 2 | number:'1.0-0' }} atenciones</div>
+                </div>
+                <div style="flex: 1; background: #f0fdf4; border-radius: 8px; padding: 8px; border-left: 3px solid #017272; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #036464;">Rendimiento Tres Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #015353;">{{ tabla.resumen.hospitalizadoPediatricos.hs * 0.77 * 3 | number:'1.0-0' }} atenciones</div>
+                </div>
+              </div>
+            </ion-card>
+
+            <ion-card class="mini-card adultos" style="margin: 0;">
+              <div class="metrics-header"><span class="area-label">🧑🏻 Hospitalario Adulto</span></div>
+              <div style="display: flex; gap: 8px; padding: 10px;">
+                <div style="flex: 1; background: #e0f2fe; border-radius: 8px; padding: 8px; border-left: 3px solid #0284c7; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #0369a1;">Rendimiento Dos Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #0c4a6e;">{{ tabla.resumen.hospitalizadoAdultos.hs * 0.77 * 2 | number:'1.0-0' }} atenciones</div>
+                </div>
+                <div style="flex: 1; background: #f0fdf4; border-radius: 8px; padding: 8px; border-left: 3px solid #017272; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #036464;">Rendimiento Tres Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #015353;">{{ tabla.resumen.hospitalizadoAdultos.hs * 0.77 * 3 | number:'1.0-0' }} atenciones</div>
+                </div>
+              </div>
+            </ion-card>
+          </div>
+          <br>
+
+          <h2 class="dashboard-subtitle" style="margin-left: 10px; color: #ffffff;">🚶 Ámbito Ambulatorio (84% Actividades Clínicas)</h2>
+          <div class="grid-dashboard">
+            <ion-card class="mini-card pediatria" style="margin: 0;">
+              <div class="metrics-header"><span class="area-label">👶🏻 Ambulatorio Pediátrico</span></div>
+              <div style="display: flex; gap: 8px; padding: 10px;">
+                <div style="flex: 1; background: #e0f2fe; border-radius: 8px; padding: 8px; border-left: 3px solid #0284c7; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #0369a1;">Rendimiento Dos Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #0c4a6e;">{{ tabla.resumen.ambulatorioPediatrico.hs * 0.84 * 2 | number:'1.0-0' }} atenciones</div>
+                </div>
+                <div style="flex: 1; background: #f0fdf4; border-radius: 8px; padding: 8px; border-left: 3px solid #017272; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #036464;">Rendimiento Tres Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #015353;">{{ tabla.resumen.ambulatorioPediatrico.hs * 0.84 * 3 | number:'1.0-0' }} atenciones</div>
+                </div>
+              </div>
+            </ion-card>
+
+            <ion-card class="mini-card adultos" style="margin: 0;">
+              <div class="metrics-header"><span class="area-label">🧑🏻 Ambulatorio Adulto</span></div>
+              <div style="display: flex; gap: 8px; padding: 10px;">
+                <div style="flex: 1; background: #e0f2fe; border-radius: 8px; padding: 8px; border-left: 3px solid #0284c7; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #0369a1;">Rendimiento Dos Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #0c4a6e;">{{ tabla.resumen.ambulatorioAdulto.hs * 0.84 * 2 | number:'1.0-0' }} atenciones</div>
+                </div>
+                <div style="flex: 1; background: #f0fdf4; border-radius: 8px; padding: 8px; border-left: 3px solid #017272; text-align: center;">
+                  <div style="font-size: 0.7rem; font-weight: bold; color: #036464;">Rendimiento Tres Atenciones por Hora</div>
+                  <div style="font-size: 1.1rem; font-weight: bold; color: #015353;">{{ tabla.resumen.ambulatorioAdulto.hs * 0.84 * 3 | number:'1.0-0' }} atenciones</div>
+                </div>
+              </div>
+            </ion-card>
+          </div>
+            <br>
+            <p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+              *Los totales presentados se encuentran redondeados, sin afectar la precisión de la estimación.
+            </p>
+        </ion-card-content>
+      </ion-card>
+      <br>
+
+      <!-- DASHBOARD 4: Sugerencia Contractual -->
       <ion-card class="dashboard-card compact-card">
         <ion-card-header class="dashboard-header">
           <ion-card-title class="main-title">Sugerencia Contractual</ion-card-title>
+          <br>
             <div>
-              <p style="color: black; font-size: 1rem; text-align: justify;">
-                  En base a la estimación de horas semanales totales y su equivalencia en JCE, se sugiere la siguiente distribución contractual para el {{hospital}}:
+              <p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+                  En base a la estimación de horas semanales totales y su equivalencia en JCE, se sugiere la siguiente distribución contractual:
               </p>
+              <br>
             </div>
         </ion-card-header>
         <ion-card-content class="ion-no-padding">
@@ -434,7 +650,7 @@
             
             <ion-card class="mini-card pediatria" style="margin: 0; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: none;">
               <div class="metrics-header">
-                <span class="area-label" style="color: #1e293b; font-weight: 600;">🧒 Usuarios Pediátricos</span>
+                <span class="area-label" style="color: #1e293b; font-weight: 600;">👶🏻 Usuarios Pediátricos</span>
               </div>
               <div class="contract-badges-container" style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
                 
@@ -460,7 +676,7 @@
 
             <ion-card class="mini-card adultos" style="margin: 0; background: #ffffff; border: 1px solid #e2e8f0; box-shadow: none;">
               <div class="metrics-header">
-                <span class="area-label" style="color: #1e293b; font-weight: 600;">👨‍💼 Usuarios Adultos</span>
+                <span class="area-label" style="color: #1e293b; font-weight: 600;">🧑🏻 Usuarios Adultos</span>
               </div>
               <div class="contract-badges-container" style="display: flex; flex-direction: column; gap: 8px; margin-top: 12px;">
                 
@@ -485,29 +701,33 @@
             </ion-card>
 
           </div>
-        </ion-card-content>
           <div>
-            <p>*Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.</p>
+            <p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+              *Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.
+            </p>
           </div>
+        </ion-card-content>
       </ion-card>
-
-
       <br>
 
-
-<!-- DASHBOARD 3: Continuidad de la Atención Hospitalaria -->
+      <!-- SECCIÓN 2: Interpretación para los Días No Hábiles -->
         <div class="section-title">Interpretación para los Días No Hábiles</div>
           <div>
             <p style="color: black; font-size: 1rem; text-align: justify;">
-              En esta sección se presenta una interpretación específica para la continuidad de la atención durante los días no hábiles.
+              En esta sección se presenta una interpretación específica para la continuidad de la atención durante los días no hábiles en el {{hospital}}.
             </p>
           </div>
+      <!-- DASHBOARD 5: Sugerencia para la Atención Hospitalaria -->
         <ion-card class="dashboard-card compact-card">
         <ion-card-header class="dashboard-header">
-          <ion-card-title class="main-title">Sugerencia para la Continuidad de la Atención Hospitalaria</ion-card-title>
+          <ion-card-title class="main-title">Sugerencia para la Atención Hospitalaria</ion-card-title>
+          <ion-card-subtitle class="custom-subtitle">
+            *Basado en sugerencias del Royal College of Speech and Language Therapists.
+          </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content class="ion-no-padding">
-          
+         <br>
+         <br> 
           <!-- 1. ANÁLISIS INSTITUCIONAL GLOBAL (Ancho completo arriba) -->
           <div class="grid-dashboard" *ngIf="continuidadTotal" style="grid-template-columns: 1fr; margin-bottom: 12px;">
             <ion-card class="mini-card" style="border-left: 4px solid #475569; background: #f8fafc; margin: 0;">
@@ -529,7 +749,7 @@
             <!-- CONTINUIDAD PEDIÁTRICA (50% de ancho) -->
             <ion-card class="mini-card" *ngIf="continuidadPediatrica" style="margin: 0;">
               <div class="metrics-header">
-                <span class="area-label">🧒 Continuidad Pediátrica</span>
+                <span class="area-label">👶🏻 Continuidad Pediátrica</span>
               </div>
               
               <!-- Bloques de KPI Gráficos -->
@@ -557,7 +777,7 @@
             <!-- CONTINUIDAD ADULTOS (50% de ancho) -->
             <ion-card class="mini-card" *ngIf="continuidadAdultos" style="margin: 0;">
               <div class="metrics-header">
-                <span class="area-label">👨‍💼 Continuidad Adultos</span>
+                <span class="area-label">🧑🏻 Continuidad Adultos</span>
               </div>
               
               <!-- Bloques de KPI Gráficos -->
@@ -584,29 +804,30 @@
 
           </div>
         </ion-card-content>
-          <div>
-            <p>*Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.</p>
-          </div>
+          <p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+            *Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.
+          </p>
       </ion-card>
- 
-      
       <br>
 
-
+      <!-- SECCIÓN 3: Consideraciones para la Cobertura Completa -->
       <div class="section-title">Consideraciones para la Cobertura Completa</div>
         <div>
           <p style="color: black; font-size: 1rem; text-align: justify;">
-              En esta sección se presenta una interpretación específica para la cobertura completa de la continuidad asistencial durante los 7 días de la semana en el {{hospital}}, incluyendo tanto días hábiles como no hábiles.  
+              En esta sección se presenta una interpretación específica para la cobertura completa de la continuidad asistencial durante los siete días de la semana en el {{hospital}}, incluyendo tanto días hábiles como no hábiles.  
           </p>
         </div>
 
-      <!-- DASHBOARD 4: Continuidad Asistencial Semanal (7 Días) -->
+      <!-- DASHBOARD 6: Continuidad Asistencial Semana Completa -->
       <ion-card class="dashboard-card compact-card">
         <ion-card-header class="dashboard-header">
-          <ion-card-title class="main-title">Continuidad Asistencial</ion-card-title>
+          <ion-card-title class="main-title">Continuidad Asistencial Semana Completa</ion-card-title>
+          <ion-card-subtitle class="custom-subtitle">
+            *Basado en sugerencias del Royal College of Speech and Language Therapists - Reino Unido.
+          </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content class="ion-no-padding">
-          
+        <br>  
           <!-- Balance Global Institucional con barra de proporción lineal -->
           <div class="grid-dashboard" *ngIf="cobertura7DiasTotal" style="grid-template-columns: 1fr; margin-bottom: 12px;">
             <ion-card class="mini-card" style="border-left: 4px solid #0052cc; background: #f0f7ff;">
@@ -648,7 +869,7 @@
             
             <!-- ÁREA PEDIÁTRICA 7 DÍAS -->
             <ion-card class="mini-card" *ngIf="cobertura7DiasPediatrica">
-              <div class="metrics-header"><span class="area-label">🧒 Área Pediátrica</span></div>
+              <div class="metrics-header"><span class="area-label">👶🏻 Área Pediátrica</span></div>
               <div style="margin: 10px 0; display: flex; align-items: center; gap: 8px;">
                 <ion-icon name="calendar-outline" style="color: #475569; font-size: 1.4rem;"></ion-icon>
                 <span style="font-size: 0.85rem; color: #000000; font-weight: 600; background: #f1f5f9; padding: 4px 8px; border-radius: 4px;">Cobertura Completa</span>
@@ -660,7 +881,7 @@
 
             <!-- ÁREA ADULTOS 7 DÍAS -->
             <ion-card class="mini-card" *ngIf="cobertura7DiasAdultos">
-              <div class="metrics-header"><span class="area-label">👨‍💼 Área Adultos</span></div>
+              <div class="metrics-header"><span class="area-label">🧑🏻 Área Adultos</span></div>
               <div style="margin: 10px 0; display: flex; align-items: center; gap: 8px;">
                 <ion-icon name="calendar-outline" style="color: #475569; font-size: 1.4rem;"></ion-icon>
                 <span style="font-size: 0.85rem; color: #000000; font-weight: 600; background: #f1f5f9; padding: 4px 8px; border-radius: 4px;">Cobertura Completa</span>
@@ -672,15 +893,15 @@
 
           </div>
         </ion-card-content>
-          <div>
-            <p>*Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.</p>
+          <div><p style="color: rgb(255, 255, 255); font-size: 1rem; text-align: justify;">
+           *Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.
+          </p>
           </div>
       </ion-card>
       <br>
 
-        
-      
-      <!-- 3. CUADRO DE NOTA OBLIGATORIA / RECOMENDACIÓN -->
+
+      <!-- SECCIÓN 4: Nota Importante -->
 
         <!--
         <div class="interpretation-box-clinica">
@@ -688,12 +909,14 @@
           <p>{{ interpretacionSemanal }}</p>
         </div>
         -->
+        <!-- DASHBOARD 8: Nota Importante -->
         <ion-card class="section-card">
           <ion-card-content style="background: #feffc7">
             <div>
-              <ion-card-title class="main-title">⚠️Nota Importante</ion-card-title> 
+              <ion-card-title class="main-title black-title"> 
+                ⚠️ Nota Importante
+              </ion-card-title> 
             </div>
-            
             <div style="margin-top: 10px; padding: 4px 2px;">
               <p style="color: #3b1e1e; font-size: 1rem; line-height: 1.5; text-align: justify; margin: 0; font-weight: 500;">
                 {{ textoFinalObligatorio }}
@@ -706,11 +929,13 @@
         <div class="ion-padding-horizontal" style="margin-top: 32px; margin-bottom: 40px;">
           <ion-row class="ion-justify-content-center" style="gap: 16px;">
             
-            <!-- Botón Principal: Nueva Simulación (Turquesa con texto blanco) -->
+        <!-- Botón Principal: Nueva Simulación (Turquesa con texto blanco) -->
             <ion-col size="12" size-md="4">
-              <ion-button expand="block" (click)="resetear()" 
-                          style="--background: #034e64; --background-activated: #0d9488; --background-focused: #0d9488; --color: #ffffff; --border-radius: 8px; font-weight: bold; margin: 0;">
-                <ion-icon [name]="'add-circle-outline'" slot="start"></ion-icon>
+              <ion-button 
+                expand="block" 
+                class="btn-calculate" 
+                (click)="resetear()">
+                <ion-icon name="refresh-outline" slot="start"></ion-icon>
                 Nueva Simulación
               </ion-button>
             </ion-col>
