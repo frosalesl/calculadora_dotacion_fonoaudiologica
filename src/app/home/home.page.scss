@@ -1,3 +1,4 @@
+
 //Brian, dejaré por acá los colores recomendados por la IA
 $turquesa: #00aeb3;        // Acento: botones secundarios, estados positivos, detalles.
 $azul-oscuro: #062638;     // Acción Principal: botones de acción principal, headers de tabla.
@@ -17,7 +18,7 @@ $verde-exito: #059669;     // Estados positivos: confirmaciones y completados.
 $ambar-aviso: #d97706;     // Estados de alerta: avisos, pendientes o precauciones.
 $violeta-moderno: #8b5cf6; // Detalles: badges o iconos para resaltar funciones modernas.
 $negro-translucido: rgba(0, 0, 0, 0.05); // Sombras: para dar profundidad sutil a tarjetas.
-
+$azulazulado: rgba(94, 170, 241, 0.1); // Hover: fondo de botones al pasar el mouse (si aplica).
 // home.page.scss
 ion-content {
   --background: #ffffff;
@@ -34,19 +35,66 @@ ion-toolbar {
   align-items: flex-start; // Alinea el logo y el texto arriba
 }
 
+.custom-header {
+  // Asegura que no haya sombras ni bordes heredados
+  --background: $azulazulado !important;
+  border-bottom: 2px solid #062638; // Línea de separación oscura y elegante
+
+  .custom-toolbar {
+  --background: transparent;
+  --min-height: auto; // Permite que se ajuste al contenido
+  padding: 10px 20px;
+  }
+
+  // Contenedor principal que agrupa logo y texto
+  .header-wrapper {
+    display: flex;
+    align-items: center; // Centrado vertical absoluto
+    justify-content: center; // Centrado horizontal (opcional, si quieres que floten al centro)
+    gap: 20px; // Espacio entre el logo y el texto
+    width: 100%;
+    
+  }
+}
+
+.logo {
+  width:120px; // Ajusta este tamaño si necesitas más o menos presencia
+  flex-shrink: 0; // Evita que el logo se deforme
+}
+
+.header-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left; // Mantiene el texto alineado a la izquierda pero el bloque centrado verticalmente
+  
+  .main-title {
+    margin: 0;
+    font-size: 1.4rem;
+    color: $azul-noche;
+  }
+
+  .subtitle {
+    margin: 4px 0 0 0;
+    color: $gris-texto;
+    font-weight: 400;
+  }
+}
+
 .intro-container {
   padding: 1.5rem 20px; // El 16px es la clave para alinearse a la izquierda
 }
 
 /* Contenedor del Título */
-.header-text-container {
+.custom-header-ion-no-border{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: left; // Alinea el texto a la izquierda
   flex: 1; // Ocupa el espacio restante
   max-width: 90%; // Evita que toque el borde derecho (puedes usar 85% si quieres más aire)
   margin-right: 2%; // Un margen fijo para asegurar separación
-  
+  ---background: $azulazulado;
+
   .main-title {
     font-size: clamp(1.2rem, 4vw, 1.6rem);
     line-height: 1.1;
@@ -94,7 +142,8 @@ ion-toolbar {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 12px 0;
+  
+  margin-left: 16px; // Alinea el título con el margen del contenedor
 }
 
 /* ============================================================================
@@ -627,4 +676,40 @@ apx-chart {
 /* Contenedor del gráfico */
 .mini-card apx-chart {
   flex: 1;
+}
+
+
+.custom-footer {
+  // Aseguramos que el fondo sea transparente o del color que desees
+  ---background: $azulazulado;
+  
+  .footer-content {
+    display: flex;
+    justify-content: center; // Centrado horizontal
+    align-items: center;     // Centrado vertical
+    padding: 16px;
+    background-color: $azulazulado; // O el color que prefieras de tus variables
+    border-top: 1px solid $gris-borde;
+  }
+
+  .footer-text {
+    font-size: 0.85rem;
+    color: $gris-texto;
+    text-align: center;
+    font-weight: 300;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* ============================================================================
+   1. REQUERIMIENTOS EXACTOS DE DISTRIBUCIÓN DE PANTALLA (15% / 80% / 5%)
+   Aplica a todos los dispositivos, asegurando que nada se desborde.
 }

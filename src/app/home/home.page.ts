@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -14,6 +15,7 @@ import { addIcons } from 'ionicons';
 import {
   IonContent,
   IonIcon,
+  IonFooter,
   IonHeader,
   IonTitle,
   IonToolbar,
@@ -43,6 +45,7 @@ import {
     FormsModule,
     IonContent,
     IonIcon,
+    IonFooter,
     IonHeader,
     IonImg,
     IonToolbar,
