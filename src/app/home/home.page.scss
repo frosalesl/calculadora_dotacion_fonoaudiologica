@@ -1,6 +1,27 @@
+
+//Brian, dejaré por acá los colores recomendados por la IA
+$turquesa: #00aeb3;        // Acento: botones secundarios, estados positivos, detalles.
+$azul-oscuro: #062638;     // Acción Principal: botones de acción principal, headers de tabla.
+$azul-noche: #0f172a;      // Contraste profundo: textos de alta autoridad.
+$azul-suave: #e0f2fe;      // Info: fondo para tarjetas de avisos informativos.
+$turquesa-claro: #eef9f9;  // Fondo de cajas: agrupa contenido de forma suave.
+$turquesa-borde: #79bbc3;  // Delimitación: bordes de tarjetas de interpretación.
+$gris-nube: #f1f5f9;       // Fondo de sección suave: áreas que separan visualmente.
+$gris-pizarra: #1e293b;    // Institucional: títulos, encabezados y texto principal.
+$gris-texto: #334155;      // Secundario: subtítulos y descripciones.
+$gris-borde: #cbd5e1;      // Separación: bordes de inputs y líneas divisorias.
+$gris-desactivado: #94a3b8;// Deshabilitado: inputs o botones que no se pueden clicar.
+$blanco: #ffffff;          // Contraste: fondo de tarjetas.
+$fondo: #f8fafc;           // Fondo general: tono neutro de la app.
+$error: #dc2626;           // Alerta: errores críticos o acciones destructivas.
+$verde-exito: #059669;     // Estados positivos: confirmaciones y completados.
+$ambar-aviso: #d97706;     // Estados de alerta: avisos, pendientes o precauciones.
+$violeta-moderno: #8b5cf6; // Detalles: badges o iconos para resaltar funciones modernas.
+$negro-translucido: rgba(0, 0, 0, 0.05); // Sombras: para dar profundidad sutil a tarjetas.
+$azulazulado: rgba(94, 170, 241, 0.1); // Hover: fondo de botones al pasar el mouse (si aplica).
 // home.page.scss
 ion-content {
-  --background: #f8fafc;
+  --background: #ffffff;
 }
 
 /* Header Profesional */
@@ -14,19 +35,66 @@ ion-toolbar {
   align-items: flex-start; // Alinea el logo y el texto arriba
 }
 
+.custom-header {
+  // Asegura que no haya sombras ni bordes heredados
+  --background: $azulazulado !important;
+  border-bottom: 2px solid #062638; // Línea de separación oscura y elegante
+
+  .custom-toolbar {
+  --background: transparent;
+  --min-height: auto; // Permite que se ajuste al contenido
+  padding: 10px 20px;
+  }
+
+  // Contenedor principal que agrupa logo y texto
+  .header-wrapper {
+    display: flex;
+    align-items: center; // Centrado vertical absoluto
+    justify-content: center; // Centrado horizontal (opcional, si quieres que floten al centro)
+    gap: 20px; // Espacio entre el logo y el texto
+    width: 100%;
+    
+  }
+}
+
+.logo {
+  width:120px; // Ajusta este tamaño si necesitas más o menos presencia
+  flex-shrink: 0; // Evita que el logo se deforme
+}
+
+.header-text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left; // Mantiene el texto alineado a la izquierda pero el bloque centrado verticalmente
+  
+  .main-title {
+    margin: 0;
+    font-size: 1.4rem;
+    color: $azul-noche;
+  }
+
+  .subtitle {
+    margin: 4px 0 0 0;
+    color: $gris-texto;
+    font-weight: 400;
+  }
+}
+
 .intro-container {
   padding: 1.5rem 20px; // El 16px es la clave para alinearse a la izquierda
 }
 
 /* Contenedor del Título */
-.header-text-container {
+.custom-header-ion-no-border{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: left; // Alinea el texto a la izquierda
   flex: 1; // Ocupa el espacio restante
   max-width: 90%; // Evita que toque el borde derecho (puedes usar 85% si quieres más aire)
   margin-right: 2%; // Un margen fijo para asegurar separación
-  
+  ---background: $azulazulado;
+
   .main-title {
     font-size: clamp(1.2rem, 4vw, 1.6rem);
     line-height: 1.1;
@@ -36,7 +104,9 @@ ion-toolbar {
     // Esto asegura que el texto se rompa en líneas
     word-wrap: break-word;
     white-space: normal; 
-    text-align: justify; 
+    text-align: center;
+    margin-bottom: 4px !important; // Un pequeño margen para separar del subtítulo 
+    
 
   }
 
@@ -44,6 +114,7 @@ ion-toolbar {
     color: #666;
     margin: 4px 0 0 0;
     white-space: normal;
+    text-align: center; 
   }
 }
 
@@ -58,7 +129,7 @@ ion-toolbar {
   box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   margin: 16px;
   border: 1px solid #d4e0ef;
-  background: #bfefe9;
+  background: #eef9f9;
   width: calc(100% - 32px); // Asegura que no se desborde y mida igual que el contenedor de arriba
   margin: 16px 16px;        // Fuerza un margen fijo de 16px a cada lado
   overflow: visible;
@@ -67,11 +138,12 @@ ion-toolbar {
 .section-title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #334155;
+  color: #1e293b;
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 12px 0;
+  
+  margin-left: 16px; // Alinea el título con el margen del contenedor
 }
 
 /* ============================================================================
@@ -122,7 +194,7 @@ ion-toolbar {
 .group-pediatria,
 .group-informacion,
 .group-adulto {
-  background: #7ea2a7;
+  background: #062638;
   border-radius: 10px;
   padding: 8px;
   color: black;
@@ -235,7 +307,7 @@ ion-label {
 
   tbody {
     tr:nth-child(odd) {
-      background: #dbdbdb;
+      background: #eceeee;
     }
 
     tr:nth-child(even) {
@@ -244,7 +316,7 @@ ion-label {
 
     td {
       padding: 18px 20px;
-      border-bottom: 1px solid #d9e6ee;
+      border-bottom: 1px solid #000000;
       color: #1e293b;
       font-size: 1rem;
       vertical-align: middle;
@@ -286,7 +358,7 @@ ion-label {
 
   td:first-child {
     text-align: left;
-    border-top-left-radius: 8px;
+    border-top-left-radius: 0px;
     border-bottom-left-radius: 8px;
   }
 
@@ -297,7 +369,7 @@ ion-label {
   }
 
   td:last-child {
-    border-top-right-radius: 8px;
+    border-top-right-radius: 0px;
     border-bottom-right-radius: 8px;
   }
 }
@@ -327,19 +399,19 @@ ion-label {
 }
 
 .summary-highlight {
-  background: #1e293b;
+  background: #062638;
   color: #f1f5f9;
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  margin: 16px 0;
+  margin-top: 0 !important;
 
   h2 {
     font-size: 2rem;
     margin: 8px 0;
     color: #0ecabb;
   }
-
+  
   span {
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -347,20 +419,50 @@ ion-label {
   }
 }
 
-/* Botones */
+/* 1. Contenedor que centra todo en la pantalla */
+.center-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 16px;
+}
+
+/* 2. Tarjeta con fondo personalizado y tamaño controlado */
+.action-card {
+  width: 100%;
+  max-width: 500px;
+  margin: 0;
+  --background: #eef9f9; // <--- AQUÍ CAMBIAS EL FONDO (Turquesa claro)
+  box-shadow: none;      // Opcional: quita la sombra para un look más plano
+}
+
+/* 3. Grupo de botones */
+.button-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  
+  ion-button {
+    flex: 1;
+    max-width: 250px; // Ajustado para que quepan bien en 500px de tarjeta
+    height: 50px;
+    margin: 0;
+  }
+}
+
+/* 4. Estilos de botones */
 .btn-calculate {
-  --background: #062638;
+  --background: #034e64;
   --border-radius: 8px;
-  font-weight: 600;
-  height: 50px;
-  margin: 16px;
-  color: #ffffff;
+  --color: #ffffff;
+  font-weight: 700;
 }
 
 .boton-rojo {
-  --background: rgb(246, 195, 195);
-  --color: rgb(252, 9, 9);
-  margin: 16px;
+  --background: #ffdad4;
+  --color: #dc2626;
+  --border-radius: 8px;
+  font-weight: 700;
 }
 
 /* Responsive original con las tablas e inputs intactos */
@@ -396,26 +498,40 @@ ion-label {
    MODIFICACIÓN DEL DASHBOARD PRINCIPAL (Con bordes y tipografía optimizada)
 ============================================================================ */
 .dashboard-card {
-  background: #c7dcdd; /* Color de fondo exacto de la interpretación */
-  border: 1px solid #79bbc3; /* Mismo color de borde */
+  background: #062638; /* Color de fondo exacto de la interpretación */
+  border: 1px solid #062638; /* Mismo color de borde */
   padding: 16px;
   margin: 16px;
   border-radius: 8px;
+}
+
+.dashboard-card ion-card-header {
+  padding-bottom: 0 !important;
 }
 
 .main-title {
   margin: 0 0 12px 0;
   font-size: 1.25rem;
   font-weight: bold;
-  color: #0a0a0a;
+  text-align: center;
+  color: #ffffff;
 }
 
 /* Subtítulos de sección con la tipografía limpia */
 .dashboard-subtitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #1e293b;
+  color: #ffffff;
   margin: 0 0 12px 4px;
+}
+
+.custom-subtitle {
+  color: #ffffff !important; // Usa un tono más oscuro para asegurar visibilidad
+  font-size: 0.9rem;
+  margin-top: 0;
+  text-align: center;
+  display: block; // Asegura que se comporte como bloque
+  opacity: 1 !important; // Algunos temas de Ionic bajan la opacidad del subtítulo
 }
 
 /* Grid adaptable: Uno al lado del otro en pantallas grandes, uno abajo del otro en móviles */
@@ -429,7 +545,7 @@ ion-label {
 .mini-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-left: 4px solid #475569 !important; /* Detalle lateral gris pizarra */
+  border-left: 8px solid #00aeb3 !important; 
   padding: 14px;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -457,9 +573,9 @@ ion-label {
 
 /* Píldora/Badge Azul para Porcentajes */
 .badge-percentage {
-  background-color: #0052cc; /* El azul fuerte de tu imagen */
+  background-color: #062638; 
   color: #ffffff;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   font-weight: bold;
   padding: 3px 8px;
   border-radius: 4px;
@@ -489,11 +605,300 @@ ion-label {
   font-weight: 500;
 }
 
+.font-jce {
+  color: #334155; // Asegúrate de darle un color visible
+  font-weight: 500;
+}
+
 /* Barra de Progreso Ionizada */
 ion-progress-bar {
   height: 8px;
   border-radius: 4px;
-  --color: #0052cc !important;        /* Azul vibrante del progreso */
+  --color: #00aeb3 !important;        /* Azul vibrante del progreso */
   --background: #cbd5e1 !important;   /* Fondo gris/azul claro opaco */
 }
 
+.black-title {
+  color: #000000 !important; /* Fuerza el color negro */
+  /* Mantienes las otras características de .main-title si las tiene */
+}
+
+/* Clase específica para las barras */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  --background: #cbd5e1; /* Fondo gris de la barra */
+  
+  // Esto fuerza el color de la parte que avanza (el azul turquesa)
+  &::part(progress) {
+    background-color: #00aeb3 !important;
+  }
+}
+
+/* ============================================================================
+   ESTOY DEJANDO ESTO PARA LOS GRÁFICOS A MOSTRAR
+============================================================================ */
+
+// Contenedor padre que mantiene el aspecto visual del piloto
+.chart-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+// Estilo para el texto dentro de los gráficos
+.chart-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  color: #334155;
+  margin-top: 8px;
+}
+
+apx-chart {
+  display: block;
+  width: 100%;
+  min-height: 220px;
+  margin-top: 10px;
+}
+
+/* Tarjetas de gráficos */
+.mini-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Contenedor del gráfico */
+.mini-card apx-chart {
+  flex: 1;
+}
+
+
+.custom-footer {
+  // Aseguramos que el fondo sea transparente o del color que desees
+  ---background: $azulazulado;
+  
+  .footer-content {
+    display: flex;
+    justify-content: center; // Centrado horizontal
+    align-items: center;     // Centrado vertical
+    padding: 16px;
+    background-color: $azulazulado; // O el color que prefieras de tus variables
+    border-top: 1px solid $gris-borde;
+  }
+
+  .footer-text {
+    font-size: 0.85rem;
+    color: $gris-texto;
+    text-align: center;
+    font-weight: 300;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+/* ============================================================================
+   1. REQUERIMIENTOS EXACTOS DE DISTRIBUCIÓN DE PANTALLA (15% / 80% / 5%)
+   Aplica a todos los dispositivos, asegurando que nada se desborde.
+============================================================================ */
+
+/* Header: Exactamente el 15% de la pantalla */
+ion-header {
+  height: 15vh !important;
+  max-height: 15vh !important;
+  min-height: 15vh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.custom-toolbar {
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 5px 10px !important; 
+}
+
+.header-wrapper {
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Usamos 'clamp' para que la tipografía escale sola y NUNCA rompa el 15vh */
+.header-text-container {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.header-text-container .main-title {
+  font-size: clamp(0.9rem, 2.2vh, 1.4rem) !important;
+  line-height: 1.1 !important;
+}
+
+.header-text-container .subtitle {
+  font-size: clamp(0.7rem, 1.6vh, 1rem) !important;
+  line-height: 1.1 !important;
+  margin-top: 2px !important;
+}
+
+.header-text-container h6.subtitle {
+  font-size: clamp(0.6rem, 1.3vh, 0.85rem) !important;
+  margin-top: 2px !important;
+}
+
+/* Content: Exactamente el 80% de la pantalla */
+ion-content {
+  height: 80vh !important;
+  max-height: 80vh !important;
+  min-height: 80vh !important;
+}
+
+/* Footer: Exactamente el 5% de la pantalla */
+ion-footer {
+  height: 5vh !important;
+  max-height: 5vh !important;
+  min-height: 5vh !important;
+  overflow: hidden !important;
+}
+
+.custom-footer .footer-content {
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 10px !important;
+}
+
+.custom-footer .footer-text {
+  font-size: clamp(0.6rem, 1.5vh, 0.85rem) !important;
+  margin: 0 !important;
+}
+
+/* ============================================================================
+   2. SOLUCIÓN DE COLUMNAS DE INPUTS EN DISPOSITIVOS PEQUEÑOS (max-width: 768px)
+============================================================================ */
+@media (max-width: 768px) {
+  
+  /* Forzamos a la fila (ion-row) a comportarse de forma horizontal y NUNCA bajar los elementos */
+  ion-grid.ion-no-padding > ion-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+  }
+
+  /* COLUMNA 1 (Leyendas): Le damos el 44% del ancho de la pantalla */
+  ion-grid.ion-no-padding > ion-row > ion-col:nth-child(1) {
+    flex: 0 0 44% !important;
+    max-width: 44% !important;
+    padding-right: 4px !important;
+    padding-left: 0 !important;
+  }
+  
+  /* COLUMNA 2 Y 3 (Inputs Pediátricos/Adultos): Se reparten el 56% restante (28% c/u) */
+  ion-grid.ion-no-padding > ion-row > ion-col:nth-child(2),
+  ion-grid.ion-no-padding > ion-row > ion-col:nth-child(3) {
+    flex: 0 0 28% !important;
+    max-width: 28% !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
+  }
+
+  /* OCULTAMOS las descripciones largas de la primera columna (sólo en móviles)
+     Esto evita que la caja izquierda sea gigante y rompa el alineamiento vertical con los inputs. */
+  ion-grid.ion-no-padding .h6-info, 
+  ion-grid.ion-no-padding .h6-info-especial {
+    display: none !important;
+  }
+
+  /* Sincronizamos las alturas (50px) para que la leyenda esté en línea recta con su Input correspondiente */
+  ion-grid.ion-no-padding .group-informacion ion-item,
+  ion-grid.ion-no-padding .group-pediatria ion-item,
+  ion-grid.ion-no-padding .group-adulto ion-item {
+    height: 50px !important;
+    --min-height: 50px !important;
+    margin-bottom: 8px !important;
+    --padding-start: 4px !important;
+    --padding-end: 4px !important;
+    --inner-padding-end: 0 !important;
+  }
+
+  /* Ajustamos la primera fila (los títulos verdes de las columnas) a una altura menor */
+  ion-grid.ion-no-padding .group-informacion ion-item:first-child,
+  ion-grid.ion-no-padding .group-pediatria ion-item:first-child,
+  ion-grid.ion-no-padding .group-adulto ion-item:first-child {
+    height: 40px !important;
+    --min-height: 40px !important;
+    margin-bottom: 6px !important;
+  }
+
+  /* Tipografía ultra-ajustada para que quepa en un espacio tan reducido */
+  ion-grid.ion-no-padding .group-pediatria ion-label,
+  ion-grid.ion-no-padding .group-adulto ion-label,
+  ion-grid.ion-no-padding .group-informacion ion-label {
+    font-size: 0.65rem !important;
+    white-space: normal !important;
+    text-align: center !important;
+    line-height: 1.1 !important;
+  }
+
+  ion-grid.ion-no-padding .h3-info {
+    font-size: 0.72rem !important;
+    min-width: 0 !important;
+    white-space: normal !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+  }
+
+  /* Estilizamos el campo editable para que el usuario pueda tocar el input con el dedo fácilmente */
+  ion-grid.ion-no-padding .group-pediatria ion-input,
+  ion-grid.ion-no-padding .group-adulto ion-input {
+    font-size: 0.9rem !important;
+    --padding-start: 2px !important;
+    --padding-end: 2px !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+}
+
+/* ============================================================================
+   3. EXTRA AJUSTES PARA PANTALLAS ULTRA PEQUEÑAS (ej. iPhone SE < 390px)
+============================================================================ */
+@media (max-width: 390px) {
+  /* Le quitamos 1% a cada input para dárselo a la leyenda principal, asegurando lectura cómoda */
+  ion-grid.ion-no-padding > ion-row > ion-col:nth-child(1) {
+    flex: 0 0 46% !important;
+    max-width: 46% !important;
+  }
+  ion-grid.ion-no-padding > ion-row > ion-col:nth-child(2),
+  ion-grid.ion-no-padding > ion-row > ion-col:nth-child(3) {
+    flex: 0 0 27% !important;
+    max-width: 27% !important;
+  }
+  
+  ion-grid.ion-no-padding .h3-info {
+    font-size: 0.65rem !important;
+  }
+  
+  ion-grid.ion-no-padding .group-pediatria ion-input,
+  ion-grid.ion-no-padding .group-adulto ion-input {
+    font-size: 0.8rem !important;
+  }
+}
