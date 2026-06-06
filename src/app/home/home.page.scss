@@ -709,10 +709,7 @@ apx-chart {
 
 
 
-/* ============================================================================
-   1. REQUERIMIENTOS EXACTOS DE DISTRIBUCIÓN DE PANTALLA (15% / 80% / 5%)
-   Aplica a todos los dispositivos, asegurando que nada se desborde.
-============================================================================ */
+
 
 /* Header: Exactamente el 15% de la pantalla */
 ion-header {
@@ -791,9 +788,6 @@ ion-footer {
   margin: 0 !important;
 }
 
-/* ============================================================================
-   2. SOLUCIÓN DE COLUMNAS DE INPUTS EN DISPOSITIVOS PEQUEÑOS (max-width: 768px)
-============================================================================ */
 @media (max-width: 768px) {
   
   /* Forzamos a la fila (ion-row) a comportarse de forma horizontal y NUNCA bajar los elementos */
@@ -878,9 +872,7 @@ ion-footer {
   }
 }
 
-/* ============================================================================
-   3. EXTRA AJUSTES PARA PANTALLAS ULTRA PEQUEÑAS (ej. iPhone SE < 390px)
-============================================================================ */
+
 @media (max-width: 390px) {
   /* Le quitamos 1% a cada input para dárselo a la leyenda principal, asegurando lectura cómoda */
   ion-grid.ion-no-padding > ion-row > ion-col:nth-child(1) {
