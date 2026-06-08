@@ -141,7 +141,7 @@ ion-toolbar {
   color: #1e293b;
   display: flex;
   align-items: center;
-  gap: 8px;
+  margin-left: 8px;//Alinea el título con el margen del contenedor
   
   margin-left: 16px; // Alinea el título con el margen del contenedor
 }
