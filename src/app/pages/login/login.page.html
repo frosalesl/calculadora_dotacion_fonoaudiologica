@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">Acceso al Sistema</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-justify-content-center ion-align-items-center">
+  <div style="display: flex; flex-direction: column; height: 100%; justify-content: center;">
+    
+    <ion-card>
+      <ion-card-header class="ion-text-center">
+        <ion-card-title>Iniciar Sesión</ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form (ngSubmit)="onLogin()">
+          
+          <ion-item lines="full" class="ion-margin-bottom">
+            <ion-input
+            label="Correo Electrónico"
+            labelPlacement="floating"
+            type="email"
+            name="email"
+            [(ngModel)]="loginData.email"
+            placeholder="ejemplo@dofo.cl"
+            required>
+          </ion-input>
+          </ion-item>
+
+          <ion-item lines="full" class="ion-margin-bottom">
+            <ion-input
+              label="Contraseña"
+              labelPlacement="floating"
+              type="password"
+              name="password"
+              [(ngModel)]="loginData.password"
+              placeholder="••••••••"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <div class="ion-padding-top">
+            <ion-button expand="block" type="submit" shape="round" color="primary">
+              Ingresar
+            </ion-button>
+          </div>
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
