@@ -33,6 +33,7 @@ import {
   IonCol,
   IonList,
   IonSearchbar,
+  IonBackButton, IonButtons
 } from '@ionic/angular/standalone';
 
 @Component({
@@ -42,6 +43,7 @@ import {
   styleUrls: ['./dofo.page.scss'],
   imports: [
     CommonModule,
+    IonBackButton, IonButtons,
     FormsModule,
     IonContent,
     IonIcon,
@@ -296,15 +298,15 @@ export class DofoPage {
   //---------------------------------------------------
   // CAMAS
   //---------------------------------------------------
-  camasBasicasAdultos: number = 0;
-  camasBasicasPediatricas: number = 0;
-  camasMediasAdultos: number = 0;
-  camasMediasPediatricas: number = 0;
-  camasCriticasAdultos: number = 0;
-  camasCriticasPediatricas: number = 0;
+  camasBasicasAdultos: number = null;
+  camasBasicasPediatricas: number = null;
+  camasMediasAdultos: number = null;
+  camasMediasPediatricas: number = null;
+  camasCriticasAdultos: number = null;
+  camasCriticasPediatricas: number = null;
   horasAmbulatorias: number = 0;
-  horasAmbulatoriasPediatricas: number = 0;
-  horasAmbulatoriasAdultos: number = 0;
+  horasAmbulatoriasPediatricas: number = null;
+  horasAmbulatoriasAdultos: number = null;
 
   //---------------------------------------------------
   // RESULTADOS

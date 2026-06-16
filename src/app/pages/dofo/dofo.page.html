@@ -1,6 +1,11 @@
 
 <ion-header class="custom-header ">
   <ion-toolbar class="custom-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Volver"></ion-back-button>
+    </ion-buttons>
+
+
     <div class="header-wrapper">
       <ion-img  src="assets/Dofo_logo_sin_texto.png" class="logo"></ion-img>
 
@@ -120,19 +125,19 @@
               <!-- icono camas -->
 
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="camasBasicasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasBasicasPediatricas', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0" [(ngModel)]="camasBasicasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasBasicasPediatricas', $event.detail.value)"></ion-input>
               </ion-item>
  
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="camasMediasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasMediasPediatricas', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0" [(ngModel)]="camasMediasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasMediasPediatricas', $event.detail.value)"></ion-input>
               </ion-item>
 
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="camasCriticasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasCriticasPediatricas', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0" [(ngModel)]="camasCriticasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasCriticasPediatricas', $event.detail.value)"></ion-input>
               </ion-item>
 
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="horasAmbulatoriasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('horasAmbulatoriasPediatricas', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0" [(ngModel)]="horasAmbulatoriasPediatricas" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('horasAmbulatoriasPediatricas', $event.detail.value)"></ion-input>
               </ion-item>
 
             </div>
@@ -145,19 +150,19 @@
               </ion-item>
               
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="camasBasicasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasBasicasAdultos', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0" [(ngModel)]="camasBasicasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasBasicasAdultos', $event.detail.value)"></ion-input>
               </ion-item>
               
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="camasMediasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasMediasAdultos', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0" [(ngModel)]="camasMediasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasMediasAdultos', $event.detail.value)"></ion-input>
               </ion-item>
 
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="camasCriticasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasCriticasAdultos', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0" [(ngModel)]="camasCriticasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('camasCriticasAdultos', $event.detail.value)"></ion-input>
               </ion-item>
 
               <ion-item fill="outline">
-                <ion-input class="input" type="number" [(ngModel)]="horasAmbulatoriasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('horasAmbulatoriasAdultos', $event.detail.value)"></ion-input>
+                <ion-input class="input" type="number" placeholder="0"   [(ngModel)]="horasAmbulatoriasAdultos" (keydown)="bloquearNegativos($event)" (ionInput)="validarCampo('horasAmbulatoriasAdultos', $event.detail.value)"></ion-input>
               </ion-item>
 
             </div>
@@ -279,7 +284,7 @@
               </tr>
             </tbody>
         </table> <!-- Cierre correcto de la tabla -->
-        <p style="color: rgb(0, 0, 0); font-size: 1rem; text-align: justify;">
+        <p style="color: rgb(0, 0, 0); font-size: 1rem; text-align: justify; margin-top: 25px;">
             *Los totales presentados podrían reflejar variaciones decimales menores (≤0,02) derivadas del redondeo automático, los cuales no afectan la precisión de la estimación.
         </p>
         <br>
