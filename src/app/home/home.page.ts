@@ -1,9 +1,11 @@
+<<<<<<< HEAD
 import { Component } from '@angular/core';
+=======
+import { Component, OnInit } from '@angular/core';
+>>>>>>> 6755d7d16050c9b2eade497ddb434451c5eef07b
 import { CommonModule } from '@angular/common';
-import { NgApexchartsModule } from 'ng-apexcharts';
-import { FormsModule } from '@angular/forms';
-import { ChangeDetectorRef } from '@angular/core';
 import { 
+<<<<<<< HEAD
   businessOutline, statsChartOutline, statsChart, trashOutline, trash, 
   bedOutline, personOutline, thermometerSharp, bagHandleSharp, bandageSharp, 
   personRemoveOutline, personRemoveSharp, personAddSharp, medicalOutline, 
@@ -32,14 +34,24 @@ import {
   IonList,
   IonSearchbar,
 } from '@ionic/angular/standalone';
+=======
+  IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, 
+  IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, 
+  IonCardContent, IonIcon 
+} from '@ionic/angular/standalone'; // Importa cada componente que usas en tu HTML
+import { RouterLink } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { calculatorOutline, timeOutline, barChartOutline } from 'ionicons/icons';
+>>>>>>> 6755d7d16050c9b2eade497ddb434451c5eef07b
 
 @Component({
   selector: 'app-home',
-  standalone: true,
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
+  standalone: true,
   imports: [
     CommonModule,
+<<<<<<< HEAD
     FormsModule,
     IonContent,
     IonIcon,
@@ -61,9 +73,18 @@ import {
     IonSearchbar,
     NgApexchartsModule
 ]
+=======
+    RouterLink,
+    // Agrega aquí todos los componentes importados arriba
+    IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, 
+    IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, 
+    IonCardContent, IonIcon
+  ]
+>>>>>>> 6755d7d16050c9b2eade497ddb434451c5eef07b
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
+<<<<<<< HEAD
   protected Math = Math;
 
   
@@ -830,4 +851,11 @@ filtrarHospitales(event: any) {
       }
     };
   }
+=======
+  constructor() {
+    addIcons({ calculatorOutline, timeOutline, barChartOutline });
+  }
+
+  ngOnInit() {}
+>>>>>>> 6755d7d16050c9b2eade497ddb434451c5eef07b
 }

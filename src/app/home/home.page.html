@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <ion-header class="ion-no-border"> 
   <ion-toolbar>
     <ion-img slot="start" src="assets/Dofo logo 5mini.png" class="logo"></ion-img>
@@ -927,6 +928,77 @@
 
 
       <!-- SECCIÓN 4: Nota Importante -->
+=======
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login" text="Salir"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Mis Aplicaciones</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding bg-page">
+  <!-- Header colapsable para iOS -->
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mis Aplicaciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <p class="welcome-text">Selecciona la herramienta que necesitas utilizar hoy:</p>
+
+  <!-- GRID DE TARJETAS -->
+  <div class="cards-grid">
+
+    <!-- CARD 1: DOFO (Calculadora de Dotación Fonoaudiológica) -->
+    <!-- El atributo routerLink usa la ruta exacta configurada en app.routes.ts -->
+    <ion-card class="app-card dofo-theme" routerLink="/dofo" button="true">
+      <div class="card-icon-container">
+        <ion-icon name="calculator-outline"></ion-icon>
+      </div>
+      <ion-card-header>
+        <ion-card-title>DOFO</ion-card-title>
+        <ion-card-subtitle>Cálculo de Dotación</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        Estimador de Dotación Fonoaudiológica en Hospitales Públicos en Chile
+      </ion-card-content>
+    </ion-card>
+
+    <!-- CARD 2: GESTIÓN DE TIEMPOS (Ejemplo de otra App futura) -->
+    <!--<ion-card class="app-card disabled-card" button="true">
+      <div class="card-icon-container">
+        <ion-icon name="time-outline"></ion-icon>
+      </div>
+      <ion-card-header>
+        <ion-card-title>Cronograma</ion-card-title>
+        <ion-card-subtitle>Próximamente</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        Planificación y distribución de jornadas laborales del equipo de salud.
+      </ion-card-content>
+    </ion-card>-->
+
+    <!-- CARD 3: ESTADÍSTICAS (Ejemplo de otra App futura) -->
+    <!--<ion-card class="app-card disabled-card" button="true">
+      <div class="card-icon-container">
+        <ion-icon name="bar-chart-outline"></ion-icon>
+      </div>
+      <ion-card-header>
+        <ion-card-title>Reportes</ion-card-title>
+        <ion-card-subtitle>Próximamente</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        Visualización de datos recopilados e indicadores de gestión hospitalaria.
+      </ion-card-content>
+    </ion-card>-->
+
+  </div>
+</ion-content>
+
+>>>>>>> 6755d7d16050c9b2eade497ddb434451c5eef07b
 
         <!--
         <div class="interpretation-box-clinica">
