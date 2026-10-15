@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -9,13 +8,12 @@ import {
   bedOutline, personOutline, thermometerSharp, bagHandleSharp, bandageSharp, 
   personRemoveOutline, personRemoveSharp, personAddSharp, medicalOutline, 
   medicalSharp, bagAddSharp, warningOutline, briefcaseOutline, timeOutline, 
-  addCircleOutline, analyticsOutline, ribbonOutline, calendarOutline, documentTextOutline, star, documentOutline, alarmOutline, refreshOutline } from 'ionicons/icons';
+  addCircleOutline, analyticsOutline, ribbonOutline, calendarOutline, documentTextOutline, star, documentOutline, alarmOutline, refreshOutline, alertCircleOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 import {
   IonContent,
   IonIcon,
-  IonFooter,
   IonHeader,
   IonTitle,
   IonToolbar,
@@ -45,7 +43,6 @@ import {
     FormsModule,
     IonContent,
     IonIcon,
-    IonFooter,
     IonHeader,
     IonImg,
     IonToolbar,
@@ -69,6 +66,8 @@ export class HomePage {
 
   protected Math = Math;
 
+  
+
   // --- Getters para gráficos ---
   get hospitalPediatricoHs(): number {
     return (this.tabla.basicasPed?.hs || 0)
@@ -90,9 +89,32 @@ export class HomePage {
   get ambulatorioAdultoHs(): number {
     return this.tabla.ambulatorioAdulto?.hs || 0;
   }
+  //
+
+  // --- Productividad (Metas por ámbito) ---
+  // Clínicas = 77% Hosp, 84% Amb. Meta = 2 a 3 atenciones.
+  get metaHospPed() { 
+    const clinicas = (this.tabla.resumen.hospitalizadoPediatricos?.hs || 0) * 0.77;
+    return { min: Math.floor(clinicas * 2), max: Math.floor(clinicas * 3) }; 
+  }
+
+  get metaHospAdulto() { 
+    const clinicas = (this.tabla.resumen.hospitalizadoAdultos?.hs || 0) * 0.77;
+    return { min: Math.floor(clinicas * 2), max: Math.floor(clinicas * 3) }; 
+  }
+
+  get metaAmbPed() { 
+    const clinicas = (this.tabla.resumen.ambulatorioPediatrico?.hs || 0) * 0.84;
+    return { min: Math.floor(clinicas * 2), max: Math.floor(clinicas * 3) }; 
+  }
+
+  get metaAmbAdulto() { 
+    const clinicas = (this.tabla.resumen.ambulatorioAdulto?.hs || 0) * 0.84;
+    return { min: Math.floor(clinicas * 2), max: Math.floor(clinicas * 3) }; 
+  }
 
   constructor(private cdr: ChangeDetectorRef) {
-    addIcons({businessOutline,statsChartOutline,documentOutline,trashOutline,alarmOutline,analyticsOutline,calendarOutline,refreshOutline,star,documentTextOutline,medicalOutline,briefcaseOutline,timeOutline,addCircleOutline,ribbonOutline,statsChart,warningOutline,medicalSharp,trash,bedOutline,personOutline,thermometerSharp,bagHandleSharp,bandageSharp,personRemoveOutline,personRemoveSharp,personAddSharp,bagAddSharp});
+    addIcons({alertCircleOutline,businessOutline,statsChartOutline,documentOutline,trashOutline,alarmOutline,analyticsOutline,calendarOutline,refreshOutline,star,documentTextOutline,medicalOutline,briefcaseOutline,timeOutline,addCircleOutline,ribbonOutline,statsChart,warningOutline,medicalSharp,trash,bedOutline,personOutline,thermometerSharp,bagHandleSharp,bandageSharp,personRemoveOutline,personRemoveSharp,personAddSharp,bagAddSharp});
   }
 
 
